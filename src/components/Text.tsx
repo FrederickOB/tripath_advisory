@@ -84,10 +84,7 @@ export default function Text() {
             <motion.div variants={itemVariants} className="space-y-6">
               <h2 className="text-4xl font-bold text-slate-800">
                 Transforming Organizations Through{" "}
-                <span className="text-secondary font-playfair">
-                  Sustainable
-                </span>{" "}
-                Solutions
+                <h1 className="text-secondary inline">Sustainable</h1> Solutions
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed font-normal">
                 TriPath Advisory is a Ghana-based consulting firm helping

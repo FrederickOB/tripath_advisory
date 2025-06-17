@@ -57,7 +57,7 @@ export const CompanyLogos = () => {
           >
             <path
               d="M0 3C50 3 50 1 100 1C150 1 150 5 200 5"
-              stroke="#10b981"
+              stroke="#0e5c4b"
               strokeWidth="2"
               fill="none"
               strokeLinecap="round"
