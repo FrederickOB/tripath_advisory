@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-playfair: "Playfair Display", serif;
+  --font-lato: "Lato", sans-serif;
+}
+
+Add custom scrollbar ::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #10b981;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0d9668;
+}
+
+/* Add smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Add text selection styling */
+::selection {
+  background: rgba(16, 185, 129, 0.2);
+  color: #065f46;
+}
+
+/* Add subtle animations to all buttons */
+button,
+a {
+  transition: all 0.3s ease;
+}
+
+/* Add subtle hover effect to all cards */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair);
+}
+
+p,
+span {
+  font-family: var(--font-lato);
+}
+
+/* Add subtle text animations */
+.animate-text-gradient {
+  background-image: linear-gradient(90deg, #10b981, #0d9488);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textGradient 5s ease infinite;
+}
+
+@keyframes textGradient {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
