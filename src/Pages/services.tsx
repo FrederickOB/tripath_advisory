@@ -316,7 +316,7 @@ export default function ServicesPage() {
                         <div className="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center">
                           <Icon className="w-8 h-8 text-emerald-600" />
                         </div>
-                        <h2 className="text-3xl font-bold unde text-slate-800">
+                        <h2 className="text-3xl font-bold underline text-slate-800">
                           {service.title}
                         </h2>
                       </div>
