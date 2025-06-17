@@ -176,10 +176,10 @@ function WhyChooseUs() {
               </div>
 
               <div className="pb-6 px-6 bg-white">
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-3">
                   {feature.title}
                 </h2>
-                <p className="text-gray-600 line-clamp-4">
+                <p className="text-gray-600 text-sm md:text-base line-clamp-4">
                   {feature.description}
                 </p>
               </div>
@@ -195,7 +195,7 @@ function WhyChooseUs() {
             variant="primary"
             size="md"
             icon={ArrowRight}
-            className="shadow-lg"
+            className="shadow-lg text-white"
           >
             Learn More About Our Approach
           </Button>

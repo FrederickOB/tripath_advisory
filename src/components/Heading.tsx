@@ -64,7 +64,7 @@ function Heading({
       </motion.span>
 
       <motion.h2
-        className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 relative z-10"
+        className="text-2xl md:text-5xl font-bold text-gray-900 mb-4 relative z-10"
         variants={animations.fadeIn}
       >
         <h1 className="relative inline-block">
@@ -93,7 +93,7 @@ function Heading({
       </motion.h2>
 
       <motion.p
-        className="max-w-2xl mx-auto text-lg text-gray-600 mt-6 font-normal"
+        className="max-w-2xl mx-auto md:text-lg text-gray-600 mt-6 font-normal"
         variants={animations.fadeIn}
       >
         {description}

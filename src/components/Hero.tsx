@@ -1,11 +1,21 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { animations } from "@/lib/animation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Button from "./ui/Button";
 
 const Hero = () => {
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
+
+  const handleVideoError = () => {
+    console.error("Error loading video");
+    setVideoLoaded(true); // Set to true to show fallback
+  };
 
   return (
     <section
@@ -85,23 +95,27 @@ const Hero = () => {
 
         {/* Parallax background image */}
         <motion.div
-          className="absolute inset-0 z-10 scale-x-[-1]"
+          className="absolute inset-0 z-10 "
           style={{ y: scrollY * 0.2 }}
         >
           <div
             className={`w-full h-full transition-opacity duration-500 ${
-              imageLoaded ? "opacity-100" : "opacity-0"
+              videoLoaded ? "opacity-100" : "opacity-0"
             }`}
           >
-            <img
-              src="/assets/hero.png"
-              alt="Sustainable development landscape with modern architecture and green spaces"
-              className="w-full h-full object-cover object-right"
-              loading="eager"
-              onLoad={() => setImageLoaded(true)}
+            <video
+              ref={videoRef}
+              src="/assets/hero.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover object-top"
+              onLoadedData={handleVideoLoad}
+              onError={handleVideoError}
             />
           </div>
-          {!imageLoaded && (
+          {!videoLoaded && (
             <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-300 animate-pulse" />
           )}
         </motion.div>

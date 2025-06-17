@@ -137,7 +137,7 @@ export default function Testimonials() {
               </div>
 
               {/* Testimonial Text */}
-              <p className="text-slate-600 mb-6 leading-relaxed relative">
+              <p className="text-slate-600 mb-6 md:leading-relaxed relative text-sm">
                 {testimonial.text}
               </p>
 

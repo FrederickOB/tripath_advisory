@@ -133,13 +133,13 @@ const ServiceCard: React.FC<{
     >
       <div
         className={clsx(
-          "flex items-start gap-8 py-8 px-6 rounded-2xl   bg-white hover:bg-gray-50 transition-all duration-300 group-hover:shadow-lg",
+          "flex items-start md:gap-8 gap-4  md:py-8 md:px-6 rounded-2xl   bg-white hover:bg-gray-50 transition-all duration-300 group-hover:shadow-lg",
           isActive ? "border-primary" : ""
         )}
       >
         {/* Number */}
         <div className="flex-shrink-0">
-          <span className="text-2xl font-light text-gray-400 group-hover:text-gray-600 transition-colors">
+          <span className="text-lg md:text-2xl font-light text-gray-400 group-hover:text-gray-600 transition-colors">
             {formattedNumber}
           </span>
         </div>
@@ -148,7 +148,7 @@ const ServiceCard: React.FC<{
         <div className="flex-1 ">
           <h3
             className={clsx(
-              "text-2xl font-semibold  mb-3 group-hover:text-primary transition-colors",
+              "text-lg md:text-2xl font-semibold  mb-3 group-hover:text-primary transition-colors",
               isActive ? "text-primary underline" : "text-gray-900 "
             )}
           >
@@ -156,7 +156,9 @@ const ServiceCard: React.FC<{
           </h3>
           <p
             className={clsx(
-              isActive ? "text-gray-600 leading-relaxed" : "hidden"
+              isActive
+                ? "text-gray-600 leading-relaxed text-sm md:text-base"
+                : "hidden"
             )}
           >
             {service.description}
@@ -166,7 +168,7 @@ const ServiceCard: React.FC<{
       <div
         className={clsx(
           isActive ? "md:hidden block" : "hidden",
-          " overflow-hidden rounded-xl"
+          " overflow-hidden rounded-xl mt-4"
         )}
       >
         <AnimatePresence mode="wait">

@@ -82,11 +82,11 @@ export default function Text() {
             className="space-y-8 flex flex-col justify-between h-full py-10"
           >
             <motion.div variants={itemVariants} className="space-y-6">
-              <h2 className="text-4xl font-bold text-slate-800">
+              <h2 className="text-2xl md:text-4xl font-bold text-slate-800">
                 Transforming Organizations Through{" "}
                 <h1 className="text-secondary inline">Sustainable</h1> Solutions
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed font-normal">
+              <p className="md:text-lg text-slate-600 leading-relaxed font-normal">
                 TriPath Advisory is a Ghana-based consulting firm helping
                 organisations align strategy with{" "}
                 <span className="text-secondary font-normal">
