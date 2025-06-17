@@ -1,30 +1,14 @@
-import { animations } from "@/lib/animation";
 import { motion } from "framer-motion";
-import { Link } from "react-router";
-
-const MotionLink = motion(Link);
+// import { animations } from "@/lib/animation";
+import { ArrowRight } from "lucide-react";
+import Button from "./ui/Button";
 
 export default function CTA() {
   return (
-    <section
-      className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 py-24"
-      aria-label="Call to action"
-    >
-      {/* Simplified Background Pattern */}
-      <div
-        className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-500/5 via-transparent to-transparent"
-        aria-hidden="true"
-      />
-
-      {/* Subtle Decorative Elements */}
-      <div
-        className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"
-        aria-hidden="true"
-      />
+    <section className="relative py-20 overflow-hidden">
+      {/* Background with gradient and pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary/90" />
+      <div className="absolute inset-0 bg-[url('/assets/pattern.png')] opacity-10" />
 
       <div className="container mx-auto px-6 relative">
         <div className="max-w-3xl mx-auto">
@@ -38,56 +22,30 @@ export default function CTA() {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
               Ready to Transform Your Organization?
             </h2>
-            <p className="text-slate-300 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-slate-300 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed font-normal">
               Join us in creating sustainable impact. Let's work together to
               align your strategy with meaningful change.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <motion.div className="text-center" variants={animations.fadeIn}>
-                <MotionLink
-                  to="/contact"
-                  className="inline-flex items-center space-x-2 px-8 py-4 bg-blue-600 text-white rounded-full font-semibold hover:bg-emerald-700 transition-colors shadow-lg"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span>Reach Out to Us</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </MotionLink>
-              </motion.div>
-              <motion.div className="text-center" variants={animations.fadeIn}>
-                <MotionLink
-                  to="/services"
-                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-slate-700/80 hover:bg-slate-600 rounded-full transition-all duration-200 shadow-lg hover:shadow-slate-500/20"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span>Learn More</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </MotionLink>
-              </motion.div>
+              <Button
+                href="/contact"
+                variant="primary"
+                size="lg"
+                icon={ArrowRight}
+                className="bg-white text-primary hover:bg-white/90"
+              >
+                Reach Out to Us
+              </Button>
+              <Button
+                href="/services"
+                variant="outline"
+                size="lg"
+                icon={ArrowRight}
+                className="border-white text-white hover:bg-white/10"
+              >
+                Learn More
+              </Button>
             </div>
 
             {/* Enhanced Trust Indicators */}

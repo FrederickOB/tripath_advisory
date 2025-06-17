@@ -10,7 +10,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 
 function Home() {
   return (
-    <div className="font-sans relative  antialiased text-slate-800">
+    <div className="relative antialiased text-dark">
       <Hero />
       <Text />
       <CompanyLogos />

@@ -5,9 +5,35 @@
 @theme {
   --font-playfair: "Playfair Display", serif;
   --font-lato: "Lato", sans-serif;
+
+  --color-primary: #0e5c4b;
+  --color-secondary: #5b8673;
+  --color-dark: #263238;
+  --color-warm: #f8f6f1;
 }
 
-Add custom scrollbar ::-webkit-scrollbar {
+/* Base Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair);
+  font-weight: 700;
+}
+
+p,
+span,
+a,
+button,
+li {
+  font-family: var(--font-lato);
+  font-weight: 400;
+}
+
+/* Add custom scrollbar */
+/* ::-webkit-scrollbar {
   width: 10px;
 }
 
@@ -16,13 +42,13 @@ Add custom scrollbar ::-webkit-scrollbar {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #10b981;
+  background: var(--color-primary);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0d9668;
-}
+  background: color-mix(in srgb, var(--color-primary) 80%, black);
+} */
 
 /* Add smooth scrolling */
 html {
@@ -31,8 +57,8 @@ html {
 
 /* Add text selection styling */
 ::selection {
-  background: rgba(16, 185, 129, 0.2);
-  color: #065f46;
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  color: var(--color-dark);
 }
 
 /* Add subtle animations to all buttons */
@@ -51,23 +77,13 @@ a {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-playfair);
-}
-
-p,
-span {
-  font-family: var(--font-lato);
-}
-
 /* Add subtle text animations */
 .animate-text-gradient {
-  background-image: linear-gradient(90deg, #10b981, #0d9488);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;

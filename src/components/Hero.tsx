@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { animations } from "@/lib/animation";
 import { useState } from "react";
+import Button from "./ui/Button";
 
 const Hero = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -17,6 +18,9 @@ const Hero = () => {
         {/* Animated gradient overlay */}
         <motion.div
           className="absolute inset-0 z-20"
+          // style={{
+          //   background: `linear-gradient(to bottom right, color-mix(in srgb, var(--color-primary) 95%, black), color-mix(in srgb, var(--color-primary) 90%, black), color-mix(in srgb, var(--color-primary) 95%, black))`,
+          // }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
@@ -29,7 +33,11 @@ const Hero = () => {
           aria-hidden="true"
         >
           <motion.div
-            className="absolute top-[10%] right-[15%] w-64 h-64 rounded-full bg-emerald-300/30"
+            className="absolute top-[10%] right-[15%] w-64 h-64 rounded-full"
+            style={{
+              backgroundColor:
+                "color-mix(in srgb, var(--color-secondary) 30%, transparent)",
+            }}
             initial={{ scale: 0, opacity: 0 }}
             animate={{
               scale: [1, 1.2, 1],
@@ -42,7 +50,11 @@ const Hero = () => {
             }}
           />
           <motion.div
-            className="absolute bottom-[20%] left-[10%] w-96 h-96 rounded-full bg-blue-600/20"
+            className="absolute bottom-[20%] left-[10%] w-96 h-96 rounded-full"
+            style={{
+              backgroundColor:
+                "color-mix(in srgb, var(--color-primary) 20%, transparent)",
+            }}
             initial={{ scale: 0, opacity: 0 }}
             animate={{
               scale: [1.2, 1, 1.2],
@@ -121,7 +133,7 @@ const Hero = () => {
             </motion.div>
 
             <motion.div
-              className="text-4xl sm:text-5xl lg:text-8xl  font-extrabold mb-6 tracking-tight"
+              className="text-4xl sm:text-5xl lg:text-8xl font-bold mb-6 tracking-tight"
               variants={animations.fadeIn}
             >
               <motion.h1
@@ -151,7 +163,7 @@ const Hero = () => {
             </motion.div>
 
             <motion.p
-              className="text-xl md:text-2xl mb-8 text-gray-100 leading-relaxed"
+              className="text-xl md:text-2xl mb-8 text-gray-100 leading-relaxed font-normal"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1 }}
@@ -161,48 +173,32 @@ const Hero = () => {
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 font-lato"
+              className="flex flex-col sm:flex-row gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1.2 }}
             >
-              <motion.a
+              <Button
                 href="#services"
-                className="px-8 py-4 bg-blue-600 transition-all rounded-full text-center sm:text-left flex items-center justify-center sm:justify-start gap-2 group shadow-lg shadow-emerald-900/30"
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+                variant="primary"
+                size="lg"
+                icon={ArrowRight}
+                className="shadow-lg"
+                style={{
+                  boxShadow:
+                    "0 10px 30px color-mix(in srgb, var(--color-primary) 30%, transparent)",
                 }}
-                whileTap={{ scale: 0.98 }}
-                aria-label="Explore our services"
               >
                 Explore Our Services
-                <motion.div
-                  initial={{ x: 0 }}
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    repeatType: "loop",
-                  }}
-                >
-                  <div className="size-6 bg-white rounded-full flex items-center justify-center">
-                    <ArrowRight size={18} className="text-blue-600" />
-                  </div>
-                </motion.div>
-              </motion.a>
-              <motion.a
+              </Button>
+              <Button
                 href="#case-studies"
-                className="px-8 py-4 bg-transparent border-2 border-white/30 rounded-full backdrop-blur-sm text-white font-medium hover:bg-white/10 hover:border-white transition-all text-center sm:text-left shadow-lg shadow-emerald-900/10"
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-                }}
-                whileTap={{ scale: 0.98 }}
-                aria-label="View our case studies"
+                variant="outline"
+                size="lg"
+                className="border-white/30 text-white hover:bg-white/10 hover:border-white backdrop-blur-sm"
               >
                 See Our Impact
-              </motion.a>
+              </Button>
             </motion.div>
           </motion.div>
         </div>

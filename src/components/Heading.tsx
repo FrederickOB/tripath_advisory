@@ -7,7 +7,7 @@ interface HeadingProps {
   title: string;
   subtitle?: string;
   description: string;
-  badgeColor?: "emerald" | "blue" | "amber" | "rose";
+  badgeColor?: "emerald" | "blue" | "amber" | "rose" | "primary";
   underlineColor?: string;
   className?: string;
   align?: "left" | "center";
@@ -18,12 +18,16 @@ function Heading({
   title,
   subtitle,
   description,
-  badgeColor = "emerald",
-  underlineColor = "#10b981",
+  badgeColor = "primary",
+  underlineColor = "#0e5c4b",
   className = "",
   align = "center",
 }: HeadingProps) {
   const colorVariants = {
+    primary: {
+      badge: "bg-primary/10 text-primary border-primary/10",
+      gradient: "from-primary to-primary",
+    },
     emerald: {
       badge: "bg-emerald-50 text-emerald-700 border-emerald-100",
       gradient: "from-emerald-100 to-emerald-50",
@@ -53,7 +57,7 @@ function Heading({
       )}
     >
       <motion.span
-        className={`inline-block px-4 py-1.5 ${selectedColor.badge} rounded-full text-sm font-medium mb-4 relative z-10 border`}
+        className={`inline-block px-4 py-1 ${selectedColor.badge} rounded-full text-xs font-normal mb-4 relative z-10 border`}
         variants={animations.scale}
       >
         {label}
@@ -63,7 +67,7 @@ function Heading({
         className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 relative z-10"
         variants={animations.fadeIn}
       >
-        <h1 className="relative  inline-block">
+        <h1 className="relative inline-block">
           {title}
           <svg
             className="absolute -bottom-2 left-0 w-full"
@@ -89,7 +93,7 @@ function Heading({
       </motion.h2>
 
       <motion.p
-        className="max-w-2xl mx-auto text-lg text-gray-600 mt-6"
+        className="max-w-2xl mx-auto text-lg text-gray-600 mt-6 font-normal"
         variants={animations.fadeIn}
       >
         {description}

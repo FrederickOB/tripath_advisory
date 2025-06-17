@@ -12,7 +12,7 @@ const ProgressBar: React.FC<{ progress: number; duration: number }> = ({
   return (
     <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
       <motion.div
-        className="h-full bg-blue-500"
+        className="h-full bg-primary"
         initial={{ width: "0%" }}
         animate={{ width: `${progress}%` }}
         transition={{ duration: 0.1, ease: "linear" }}
@@ -68,8 +68,6 @@ const Services = () => {
           title="Tailored Solutions"
           subtitle="For Your Business Needs"
           description="Our expert team delivers customized strategies that address your unique challenges and drive sustainable growth."
-          badgeColor="blue"
-          underlineColor="#3b82f6"
           className="my-8"
         />
 
@@ -136,7 +134,7 @@ const ServiceCard: React.FC<{
       <div
         className={clsx(
           "flex items-start gap-8 py-8 px-6 rounded-2xl   bg-white hover:bg-gray-50 transition-all duration-300 group-hover:shadow-lg",
-          isActive ? "border-blue-500" : ""
+          isActive ? "border-primary" : ""
         )}
       >
         {/* Number */}
@@ -150,8 +148,8 @@ const ServiceCard: React.FC<{
         <div className="flex-1 ">
           <h3
             className={clsx(
-              "text-2xl font-semibold  mb-3 group-hover:text-blue-600 transition-colors",
-              isActive ? "text-blue-600" : "text-gray-900"
+              "text-2xl font-semibold  mb-3 group-hover:text-primary transition-colors",
+              isActive ? "text-primary underline" : "text-gray-900 "
             )}
           >
             {service.title}

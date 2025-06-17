@@ -84,16 +84,19 @@ export default function Text() {
             <motion.div variants={itemVariants} className="space-y-6">
               <h2 className="text-4xl font-bold text-slate-800">
                 Transforming Organizations Through{" "}
-                <span className="text-emerald-600">Sustainable</span> Solutions
+                <span className="text-secondary font-playfair">
+                  Sustainable
+                </span>{" "}
+                Solutions
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed">
+              <p className="text-lg text-slate-600 leading-relaxed font-normal">
                 TriPath Advisory is a Ghana-based consulting firm helping
                 organisations align strategy with{" "}
-                <span className="text-emerald-600 font-medium">
+                <span className="text-secondary font-normal">
                   sustainability
                 </span>
-                , <span className="text-blue-600 font-medium">inclusion</span>,
-                and <span className="text-slate-800 font-medium">impact</span>.
+                , <span className="text-blue-600 font-normal">inclusion</span>,
+                and <span className="text-slate-800 font-normal">impact</span>.
                 We bridge global frameworks with local realities to co-create
                 ESG solutions, policy reforms, and inclusive development models
                 that work.

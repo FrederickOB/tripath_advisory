@@ -12,21 +12,21 @@ export const services = [
     description:
       "We support banks, corporates, and development partners to integrate ESG strategies, conduct climate risk assessments, and design sustainable financial products. Our frameworks align with GRI, IFRS S1/S2, and Ghana's Green Finance Taxonomy, CSRD , BOG SBPs",
     icon: "BarChart4",
-    image: "src/assets/services/1.png",
+    image: "/assets/services/1.png",
   },
   {
     title: "Social Policy & Inclusive Development",
     description:
       "From social protection reform to public health systems, we help shape inclusive policy responses that are data-informed, people-focused, and system-strengthening. Our services cover research, design, implementation, and M&E.",
     icon: "FileText",
-    image: "src/assets/services/2.png",
+    image: "/assets/services/2.png",
   },
   {
     title: "Gender, Youth & Community Empowerment",
     description:
       "We mainstream gender and youth inclusion in programmes and policies. Whether co-creating community-led solutions or designing national youth interventions, we apply participatory approaches that uplift underrepresented voices.",
     icon: "LineChart",
-    image: "src/assets/services/3.png",
+    image: "/assets/services/3.png",
   },
 ];
 
@@ -242,7 +242,7 @@ export const team = [
     name: "Samuel Kweku Kumah",
     role: "ESG & Sustainable Finance Lead",
     bio: "Specialises in climate risk, sustainability reporting, and ESG strategy. Speaker at UNEP-FI and author of multiple published insights",
-    image: "/src/assets/samuel.jpg",
+    image: "/assets/samuel.jpg",
     fullProfile: `
 Summary:
 Samuel Kweku Kumah is an ESG and sustainable finance leader with over a decade of professional experience, including more than four years focused on ESG strategy and reporting, climate risk management, and sustainable finance. He combines strategic vision with on-the-ground implementation, guiding organisations to integrate sustainability into core business practices.
@@ -287,7 +287,7 @@ Samuel is a passionate advocate for ethical leadership and youth empowerment, ac
     name: "Patricia Ohenewaa Akuffo-Henaku",
     role: "Policy & Health Systems Advisor",
     bio: "Expert in public health policy, social protection systems, and stakeholder engagement. Co-author of national research for the World Bank and FHI360.",
-    image: "/src/assets/patricia.jpg",
+    image: "/assets/patricia.jpg",
     fullProfile: `Patricia Ohenewaa Akuffo-Henaku brings extensive expertise in public health policy and social protection systems, with a focus on sustainable healthcare solutions.
 
 Key Achievements:
@@ -312,7 +312,7 @@ Education:
     name: "Ebenezer Kwesi Bosomprah",
     role: "Gender & Community Development Lead",
     bio: "Researcher and practitioner in social justice, youth empowerment, and rural inclusion. Leads Oxfam Ghana's gender-focused innovation initiatives.",
-    image: "/src/assets/eben.jpg",
+    image: "/assets/eben.jpg",
     fullProfile: `Ebenezer Kwesi Bosomprah is a Ph.D. candidate at the Institute of African Studies, University of Ghana. His research interests include childhood studies, juvenile justice, gender, and social inclusion. His doctoral thesis critically examines the concept of child offenders within Ghana's juvenile correctional system, employing a social constructionist framework. Ebenezer holds an M.Phil in Social Work and a Bachelor of Arts in Social Work from the University of Ghana.
 
 With extensive experience in academic administration and research, Ebenezer currently serves as Executive Secretary of the African Studies Association of Africa, where he streamlines operations and enhances organizational productivity. He is also a Publications Assistant for the Contemporary Journal of African Studies hosted by the Institute of African Studies at the University of Ghana, supporting publication management and administrative tasks. Additionally, he serves as a Teaching Assistant for the Critical Investigations into Humanitarianism in Africa (CIHA) hosted by the University of California, Irvine and the CIHA blog.

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../constants";
 import { animations } from "@/lib/animation";
 import clsx from "clsx";
+import { Link } from "react-router";
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -21,8 +22,8 @@ const Button: React.FC<ButtonProps> = ({
   const baseClasses =
     "inline-flex items-center space-x-2 px-6 py-3 rounded-full  transition-colors shadow-xl";
   const variants = {
-    primary: "bg-white text-gray-900 hover:bg-gray-100",
-    secondary: "bg-blue-600 text-white hover:bg-blue-500",
+    primary: "bg-warm text-dark hover:bg-warm/90",
+    secondary: "bg-primary text-white hover:bg-primary/90",
   };
 
   return (
@@ -40,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
 
 // Logo Component
 const Logo: React.FC<{ scrolled: boolean }> = ({ scrolled }) => (
-  <div className="flex items-center space-x-2">
+  <Link to="/" className="flex items-center space-x-2">
     {/* <div
       className={`w-8 h-8 ${
         scrolled ? "bg-blue-500" : "bg-blue-500/80"
@@ -49,13 +50,13 @@ const Logo: React.FC<{ scrolled: boolean }> = ({ scrolled }) => (
     </div> */}
     <img src="/assets/logo.png" alt="logo" className="w-6 " />
     <h2
-      className={`text-lg font-bold font-playfair ${
+      className={`text-lg font-bold ${
         scrolled ? "text-gray-900" : "text-white"
       } transition-colors duration-300`}
     >
       TriPath Advisory
     </h2>
-  </div>
+  </Link>
 );
 
 // Navigation Component
@@ -66,14 +67,14 @@ const Navigation = ({
   items: { label: string; path: string }[];
   scrolled: boolean;
 }) => (
-  <nav className="hidden md:flex space-x-8">
+  <nav className="hidden lg:flex space-x-8">
     {items.map((item) => (
       <motion.a
         key={item.label}
         href={item.path}
         className={`${scrolled ? "text-gray-600" : "text-white"} hover:${
           scrolled ? "text-gray-900" : "text-emerald-300"
-        } transition-colors duration-300 font-playfair `}
+        } transition-colors duration-300 font-normal`}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -83,9 +84,56 @@ const Navigation = ({
   </nav>
 );
 
+// Mobile Navigation Component
+const MobileNavigation = ({
+  items,
+  // scrolled,
+  isOpen,
+  onClose,
+}: {
+  items: { label: string; path: string }[];
+  scrolled: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+}) => (
+  <AnimatePresence>
+    {isOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        className="fixed inset-0 bg-white z-40 pt-20 px-6"
+      >
+        <nav className="flex flex-col space-y-6">
+          {items.map((item) => (
+            <motion.a
+              key={item.label}
+              href={item.path}
+              className="text-gray-900 text-xl font-normal"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onClose}
+            >
+              {item.label}
+            </motion.a>
+          ))}
+          <Button
+            variant="secondary"
+            className="mt-4 font-normal text-sm"
+            onClick={onClose}
+          >
+            Book Appointment
+          </Button>
+        </nav>
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
+
 // Header Component
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,6 +142,22 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (
+        !target.closest(".mobile-menu-button") &&
+        !target.closest(".mobile-menu")
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -109,20 +173,52 @@ export default function Navbar() {
       <div className="flex justify-between container items-center mx-auto px-6">
         <Logo scrolled={scrolled} />
         <Navigation items={navLinks} scrolled={scrolled} />
-        <div className="flex space-x-4">
+        <div className="hidden lg:flex space-x-4">
           <Button
             variant={scrolled ? "secondary" : "primary"}
             className={clsx(
               scrolled
                 ? ""
                 : "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm",
-              " font-playfair text-sm"
+              " font-normal text-sm"
             )}
           >
             Book Appointment
           </Button>
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="lg:hidden mobile-menu-button p-2"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <div className="w-6 h-5 relative flex flex-col justify-between">
+            <span
+              className={`w-full h-0.5 bg-current transform transition-all duration-300 ${
+                isMobileMenuOpen ? "rotate-45 translate-y-2" : ""
+              } ${scrolled ? "bg-gray-900" : "bg-white"}`}
+            />
+            <span
+              className={`w-full h-0.5 bg-current transition-all duration-300 ${
+                isMobileMenuOpen ? "opacity-0" : ""
+              } ${scrolled ? "bg-gray-900" : "bg-white"}`}
+            />
+            <span
+              className={`w-full h-0.5 bg-current transform transition-all duration-300 ${
+                isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""
+              } ${scrolled ? "bg-gray-900" : "bg-white"}`}
+            />
+          </div>
+        </button>
       </div>
+
+      {/* Mobile Navigation */}
+      <MobileNavigation
+        items={navLinks}
+        scrolled={scrolled}
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
     </motion.nav>
   );
 }

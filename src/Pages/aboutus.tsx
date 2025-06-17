@@ -58,10 +58,10 @@ function AboutUs() {
   // ];
 
   return (
-    <div className="font-sans relative pb-10 antialiased text-slate-800">
+    <div className="relative pb-10 antialiased text-dark">
       {/* Hero Section */}
-      <section className="relative h-[40vh] bg-gradient-to-br from-teal-900 to-teal-800 flex items-center justify-center">
-        <div className="absolute inset-0 bg-black/30" />
+      <section className="relative h-[40vh] bg-gradient-to-br from-primary to-primary/90 flex items-center justify-center">
+        <div className="absolute inset-0 bg-dark/30" />
         <div className="relative z-10 text-center text-white px-4">
           <motion.h1
             className="text-5xl md:text-6xl font-bold mb-6"
@@ -72,7 +72,7 @@ function AboutUs() {
             About TriPath Advisory
           </motion.h1>
           <motion.p
-            className="text-xl max-w-2xl mx-auto"
+            className="text-xl max-w-2xl mx-auto font-normal"
             variants={animations.fadeIn}
             initial="initial"
             animate="animate"
@@ -89,7 +89,7 @@ function AboutUs() {
             label="OUR PURPOSE"
             title="Mission & Vision"
             description="Driving sustainable transformation through innovative ESG solutions"
-            badgeColor="emerald"
+            // badgeColor="emerald"
           />
 
           <div className="grid md:grid-cols-2 gap-12 mt-12">
@@ -103,7 +103,7 @@ function AboutUs() {
               <h3 className="text-2xl font-bold text-teal-800 mb-4">
                 Our Mission
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 font-normal">
                 To empower organizations with sustainable strategies that create
                 lasting positive impact while driving business growth and
                 stakeholder value.
@@ -120,7 +120,7 @@ function AboutUs() {
               <h3 className="text-2xl font-bold text-teal-800 mb-4">
                 Our Vision
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 font-normal">
                 To be the global leader in ESG advisory, transforming how
                 organizations approach sustainability and creating a more
                 equitable, sustainable future for all.
@@ -137,7 +137,6 @@ function AboutUs() {
             label="OUR IMPACT"
             title="By The Numbers"
             description="Making a difference through measurable results"
-            badgeColor="blue"
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
@@ -171,7 +170,7 @@ function AboutUs() {
             label="OUR TEAM"
             title="Leadership Team"
             description="Meet the experts driving our success"
-            badgeColor="amber"
+            // badgeColor="amber"
           />
           <div className="grid md:grid-cols-3 gap-8 mt-12">
             {team.map((member, index) => (
@@ -196,10 +195,10 @@ function AboutUs() {
                   <h3 className="text-xl font-bold text-gray-900 mb-1">
                     {member.name}
                   </h3>
-                  <p className="text-teal-600 font-medium mb-3">
+                  <p className="text-secondary font-medium mb-3">
                     {member.role}
                   </p>
-                  <p className="text-gray-600">{member.bio}</p>
+                  <p className="text-gray-500">{member.bio}</p>
                 </div>
               </motion.div>
             ))}

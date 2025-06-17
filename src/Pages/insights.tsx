@@ -52,11 +52,11 @@ export default function InsightsPage() {
   }, [searchQuery, selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-warm via-white to-warm">
       {/* Hero Section */}
 
-      <section className="relative h-[40vh] bg-gradient-to-br from-teal-900 to-teal-800 flex items-center justify-center">
-        <div className="absolute inset-0 bg-black/30" />
+      <section className="relative h-[40vh] bg-gradient-to-br from-primary to-primary/90 flex items-center justify-center">
+        <div className="absolute inset-0 bg-dark/30" />
         <div className="relative z-10 text-center text-white px-4">
           <motion.h1
             className="text-5xl md:text-6xl font-bold mb-6"

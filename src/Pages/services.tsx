@@ -15,6 +15,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { animations } from "@/lib/animation";
+import Button from "@/components/ui/Button";
 
 const iconMap = {
   BarChart4: BarChart4,
@@ -116,14 +117,14 @@ const serviceDetails = {
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-warm via-white to-warm">
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         {/* Background with parallax effect */}
         <div className="absolute inset-0 z-0">
           {/* Animated gradient overlay */}
           <motion.div
-            className="absolute inset-0 z-20 bg-gradient-to-br from-teal-900/95 via-emerald-900/90 to-teal-900/95"
+            className="absolute inset-0 z-20 bg-gradient-to-br from-primary/95 via-primary/90 to-primary/95"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5 }}
@@ -132,7 +133,7 @@ export default function ServicesPage() {
           {/* Animated geometric shapes */}
           <div className="absolute inset-0 z-30 overflow-hidden opacity-20 mix-blend-soft-light">
             <motion.div
-              className="absolute top-[10%] right-[15%] w-64 h-64 rounded-full bg-emerald-300/30"
+              className="absolute top-[10%] right-[15%] w-64 h-64 rounded-full bg-secondary/30"
               initial={{ scale: 0, opacity: 0 }}
               animate={{
                 scale: [1, 1.2, 1],
@@ -145,7 +146,7 @@ export default function ServicesPage() {
               }}
             />
             <motion.div
-              className="absolute bottom-[20%] left-[10%] w-96 h-96 rounded-full bg-blue-600/20"
+              className="absolute bottom-[20%] left-[10%] w-96 h-96 rounded-full bg-primary/20"
               initial={{ scale: 0, opacity: 0 }}
               animate={{
                 scale: [1.2, 1, 1.2],
@@ -207,11 +208,11 @@ export default function ServicesPage() {
                     transition={{ duration: 0.8, delay: 0.7 }}
                   >
                     Transforming{" "}
-                    <span className="text-emerald-300 font-extrabold">
+                    <span className="text-emerald-300 font-bold">
                       Challenges
                     </span>{" "}
                     into{" "}
-                    <span className="text-emerald-300 font-extrabold">
+                    <span className="text-emerald-300 font-bold">
                       Opportunities
                     </span>
                   </motion.h1>
@@ -222,23 +223,23 @@ export default function ServicesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.9 }}
                   >
-                    <p className="font-light">
+                    <p className="font-normal">
                       TriPath Advisory is a Ghana-based consulting firm helping
                       organisations align strategy with{" "}
-                      <span className="text-emerald-300 font-medium">
+                      <span className="text-emerald-300 font-normal">
                         sustainability
                       </span>
                       ,{" "}
-                      <span className="text-emerald-300 font-medium">
+                      <span className="text-emerald-300 font-normal">
                         inclusion
                       </span>
                       , and{" "}
-                      <span className="text-emerald-300 font-medium">
+                      <span className="text-emerald-300 font-normal">
                         impact
                       </span>
                       .
                     </p>
-                    <p className="font-light">
+                    <p className="font-normal">
                       We bridge global frameworks with local realities to
                       co-create ESG solutions, policy reforms, and inclusive
                       development models that work.
@@ -287,7 +288,7 @@ export default function ServicesPage() {
           </motion.div>
 
           <motion.div
-            className="grid gap-24"
+            className="grid  gap-24"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -315,7 +316,7 @@ export default function ServicesPage() {
                         <div className="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center">
                           <Icon className="w-8 h-8 text-emerald-600" />
                         </div>
-                        <h2 className="text-3xl font-bold text-slate-800">
+                        <h2 className="text-3xl font-bold unde text-slate-800">
                           {service.title}
                         </h2>
                       </div>
@@ -344,7 +345,7 @@ export default function ServicesPage() {
                   </div>
 
                   {/* Service Details */}
-                  <div className="grid md:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {/* Benefits */}
                     <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
                       <div className="flex items-center gap-3 mb-6">
@@ -610,20 +611,30 @@ export default function ServicesPage() {
             <h2 className="text-4xl md:text-5xl font-bold mb-8">
               Ready to Create Sustainable Impact?
             </h2>
-            <p className="text-xl mb-12 text-teal-100 leading-relaxed">
+            <p className="text-xl mb-12 text-teal-100 leading-relaxed font-normal">
               Let's work together to develop solutions that drive positive
               change and create lasting value for your organization and
               stakeholders.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-teal-900 hover:bg-teal-50 transition-colors font-semibold">
+              <Button
+                href="/contact"
+                variant="primary"
+                size="lg"
+                icon={ArrowRight}
+                className="bg-white text-primary hover:bg-white/90"
+              >
                 Get in Touch
-                <ArrowRight className="w-5 h-5" />
-              </button>
-              <button className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-white text-white hover:bg-white/10 transition-colors font-semibold">
+              </Button>
+              <Button
+                href="/brochure"
+                variant="outline"
+                size="lg"
+                icon={ArrowRight}
+                className="border-white text-white hover:bg-white/10"
+              >
                 Download Brochure
-                <ArrowRight className="w-5 h-5" />
-              </button>
+              </Button>
             </div>
           </motion.div>
         </div>
