@@ -4,40 +4,7 @@ import { navLinks } from "../constants";
 import { animations } from "@/lib/animation";
 import clsx from "clsx";
 import { Link } from "react-router";
-
-interface ButtonProps {
-  children: React.ReactNode;
-  variant?: "primary" | "secondary";
-  className?: string;
-  onClick?: () => void;
-}
-
-// Reusable Button Component
-const Button: React.FC<ButtonProps> = ({
-  children,
-  variant = "primary",
-  className = "",
-  onClick,
-}) => {
-  const baseClasses =
-    "inline-flex items-center space-x-2 px-6 py-3 rounded-full  transition-colors shadow-xl";
-  const variants = {
-    primary: "bg-warm text-dark hover:bg-warm/90",
-    secondary: "bg-primary text-white hover:bg-primary/90",
-  };
-
-  return (
-    <motion.button
-      className={`${baseClasses} ${variants[variant]} ${className}`}
-      onClick={onClick}
-      whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
-      whileTap={{ scale: 0.95 }}
-      variants={animations.item}
-    >
-      {children}
-    </motion.button>
-  );
-};
+import Button from "@/components/ui/Button";
 
 // Logo Component
 const Logo: React.FC<{ scrolled: boolean }> = ({ scrolled }) => (
@@ -118,7 +85,7 @@ const MobileNavigation = ({
             </motion.a>
           ))}
           <Button
-            variant="secondary"
+            variant="primary"
             className="mt-4 font-normal text-sm"
             onClick={onClose}
           >
@@ -175,7 +142,7 @@ export default function Navbar() {
         <Navigation items={navLinks} scrolled={scrolled} />
         <div className="hidden lg:flex space-x-4">
           <Button
-            variant={scrolled ? "secondary" : "primary"}
+            variant="primary"
             className={clsx(
               scrolled
                 ? ""
@@ -188,7 +155,9 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           className="lg:hidden mobile-menu-button p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
@@ -209,7 +178,7 @@ export default function Navbar() {
               } ${scrolled ? "bg-gray-900" : "bg-white"}`}
             />
           </div>
-        </button>
+        </Button>
       </div>
 
       {/* Mobile Navigation */}

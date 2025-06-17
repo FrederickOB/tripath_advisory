@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { caseStudies } from "../constants";
 import { motion, AnimatePresence } from "framer-motion";
+import Button from "@/components/ui/Button";
 
 const AUTO_ROTATE_INTERVAL = 7000; // ms
 
@@ -122,10 +123,12 @@ const CaseStudies = () => {
             {/* Navigation Dots */}
             <div className="mt-8 flex space-x-4 justify-center">
               {caseStudies.map((cs, index) => (
-                <button
+                <Button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-4 h-4 rounded-full border-2 border-amber-600 flex items-center justify-center transition-all duration-300
+                  variant="ghost"
+                  size="sm"
+                  className={`w-4 h-4 p-0 rounded-full border-2 border-amber-600 flex items-center justify-center transition-all duration-300
                     ${
                       activeIndex === index
                         ? "bg-amber-600 scale-125 shadow-lg"
@@ -138,7 +141,7 @@ const CaseStudies = () => {
                   {activeIndex === index && (
                     <span className="block w-2 h-2 bg-white rounded-full"></span>
                   )}
-                </button>
+                </Button>
               ))}
             </div>
           </div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { animations } from "@/lib/animation";
+import Button from "@/components/ui/Button";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -159,12 +160,14 @@ const Contact = () => {
                 ></textarea>
               </div>
 
-              <button
+              <Button
                 type="submit"
-                className="px-8 py-4 bg-amber-600 text-white rounded-md font-medium hover:bg-amber-700 transition-all w-full"
+                variant="secondary"
+                size="md"
+                className="bg-amber-600 hover:bg-amber-700 w-full"
               >
                 Send Message
-              </button>
+              </Button>
             </form>
           </div>
         </div>

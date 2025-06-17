@@ -252,13 +252,23 @@ export default function ServicesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1.1 }}
                   >
-                    <button className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-semibold transition-colors duration-300 flex items-center gap-2">
+                    <Button
+                      href="#services"
+                      variant="primary"
+                      size="lg"
+                      icon={ArrowRight}
+                      className="bg-emerald-500 hover:bg-emerald-600"
+                    >
                       Explore Services
-                      <ArrowRight className="w-5 h-5" />
-                    </button>
-                    <button className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-colors duration-300 backdrop-blur-sm">
+                    </Button>
+                    <Button
+                      href="#contact"
+                      variant="outline"
+                      size="lg"
+                      className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm border-none"
+                    >
                       Contact Us
-                    </button>
+                    </Button>
                   </motion.div>
                 </div>
               </div>
@@ -323,10 +333,15 @@ export default function ServicesPage() {
                       <p className="text-lg text-slate-600 leading-relaxed mb-8">
                         {service.description}
                       </p>
-                      <button className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition-colors font-semibold">
+                      <Button
+                        href="#services"
+                        variant="primary"
+                        size="lg"
+                        icon={ArrowRight}
+                        className="bg-emerald-600 hover:bg-emerald-700"
+                      >
                         Learn More
-                        <ArrowRight className="w-5 h-5" />
-                      </button>
+                      </Button>
                     </div>
                     <div
                       className={`order-1 ${
