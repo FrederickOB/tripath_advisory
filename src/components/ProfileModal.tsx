@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import Button from "@/components/ui/Button";
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -44,12 +45,14 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
-            <button
+            <Button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
-            >
-              <X className="w-6 h-6 text-gray-500" />
-            </button>
+              variant="ghost"
+              size="sm"
+              className="absolute top-4 right-4 p-2 hover:bg-gray-100"
+              icon={X}
+              aria-label="Close"
+            />
 
             <div className="grid md:grid-cols-2 gap-8">
               {/* Image section */}
