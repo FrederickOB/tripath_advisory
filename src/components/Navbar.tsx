@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import Button from "@/components/ui/Button";
 
 // Logo Component
-const Logo: React.FC<{ scrolled: boolean }> = ({ scrolled }) => (
+export const Logo: React.FC<{ scrolled: boolean }> = ({ scrolled }) => (
   <Link to="/" className="flex items-center space-x-2">
     {/* <div
       className={`w-8 h-8 ${

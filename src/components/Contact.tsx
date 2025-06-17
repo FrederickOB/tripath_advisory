@@ -28,7 +28,7 @@ const Contact = () => {
   };
 
   return (
-    <div id="contact" className="py-24 bg-teal-800 text-white">
+    <div id="contact" className="py-24 bg-primary text-white">
       <section className="relative h-[30vh]  flex items-center justify-center">
         <div className="absolute inset-0 " />
         <div className="relative z-10 text-center text-white px-4">
@@ -57,7 +57,7 @@ const Contact = () => {
             <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
             <div className="space-y-6">
               <div className="flex items-start">
-                <div className="bg-teal-700 p-3 rounded-full mr-4">
+                <div className="bg-primary p-3 rounded-full mr-4">
                   <Mail size={20} />
                 </div>
                 <div>
@@ -67,7 +67,7 @@ const Contact = () => {
               </div>
 
               <div className="flex items-start">
-                <div className="bg-teal-700 p-3 rounded-full mr-4">
+                <div className="bg-primary p-3 rounded-full mr-4">
                   <Phone size={20} />
                 </div>
                 <div>
@@ -77,7 +77,7 @@ const Contact = () => {
               </div>
 
               <div className="flex items-start">
-                <div className="bg-teal-700 p-3 rounded-full mr-4">
+                <div className="bg-primary p-3 rounded-full mr-4">
                   <MapPin size={20} />
                 </div>
                 <div>
@@ -105,7 +105,7 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full p-3 rounded-md bg-teal-700 text-white placeholder-teal-300 border border-teal-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full p-3 rounded-md bg-primary text-white placeholder-teal-300 border border-secondary focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="Your name"
                 />
               </div>
@@ -121,7 +121,7 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full p-3 rounded-md bg-teal-700 text-white placeholder-teal-300 border border-teal-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full p-3 rounded-md bg-primary text-white placeholder-teal-300 border border-secondary focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -139,7 +139,7 @@ const Contact = () => {
                   name="organization"
                   value={formData.organization}
                   onChange={handleChange}
-                  className="w-full p-3 rounded-md bg-teal-700 text-white placeholder-teal-300 border border-teal-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full p-3 rounded-md bg-primary text-white placeholder-teal-300 border border-secondary focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="Your organization"
                 />
               </div>
@@ -155,7 +155,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   rows={4}
-                  className="w-full p-3 rounded-md bg-teal-700 text-white placeholder-teal-300 border border-teal-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full p-3 rounded-md bg-primary text-white placeholder-teal-300 border border-secondary focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="How can we help you?"
                 ></textarea>
               </div>
@@ -164,7 +164,7 @@ const Contact = () => {
                 type="submit"
                 variant="secondary"
                 size="md"
-                className="bg-amber-600 hover:bg-amber-700 w-full"
+                className="w-full"
               >
                 Send Message
               </Button>

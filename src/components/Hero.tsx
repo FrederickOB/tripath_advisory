@@ -184,10 +184,10 @@ const Hero = () => {
                 size="lg"
                 icon={ArrowRight}
                 className="shadow-lg"
-                style={{
-                  boxShadow:
-                    "0 10px 30px color-mix(in srgb, var(--color-primary) 30%, transparent)",
-                }}
+                // style={{
+                //   boxShadow:
+                //     "0 10px 30px color-mix(in srgb, var(--color-primary) 30%, transparent)",
+                // }}
               >
                 Explore Our Services
               </Button>

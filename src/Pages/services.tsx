@@ -118,162 +118,26 @@ const serviceDetails = {
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-warm via-white to-warm">
-      {/* Hero Section */}
-      <section className="relative h-screen overflow-hidden">
-        {/* Background with parallax effect */}
-        <div className="absolute inset-0 z-0">
-          {/* Animated gradient overlay */}
-          <motion.div
-            className="absolute inset-0 z-20 bg-gradient-to-br from-primary/95 via-primary/90 to-primary/95"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.5 }}
-          />
-
-          {/* Animated geometric shapes */}
-          <div className="absolute inset-0 z-30 overflow-hidden opacity-20 mix-blend-soft-light">
-            <motion.div
-              className="absolute top-[10%] right-[15%] w-64 h-64 rounded-full bg-secondary/30"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.2, 0.3, 0.2],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-            <motion.div
-              className="absolute bottom-[20%] left-[10%] w-96 h-96 rounded-full bg-primary/20"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{
-                scale: [1.2, 1, 1.2],
-                opacity: [0.1, 0.2, 0.1],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1,
-              }}
-            />
-          </div>
-
-          {/* Background image */}
-          <motion.div
-            className="absolute inset-0 z-10"
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 2, ease: "easeOut" }}
+      <section className="relative h-[40vh] bg-gradient-to-br from-primary to-primary/90 flex items-center justify-center">
+        <div className="absolute inset-0 bg-dark/30" />
+        <div className="relative z-10 text-center text-white px-4">
+          <motion.h1
+            className="text-5xl md:text-6xl font-bold mb-6"
+            variants={animations.fadeIn}
+            initial="initial"
+            animate="animate"
           >
-            <img
-              src="/assets/girl.jpg"
-              alt="Sustainable development landscape"
-              className="w-full h-full object-cover object-center"
-            />
-          </motion.div>
-        </div>
-
-        {/* Content */}
-        <div className="relative z-40 h-full flex items-center">
-          <div className="container mx-auto px-6">
-            <motion.div
-              className="max-w-4xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
-            >
-              <div className="relative bg-black/30 backdrop-blur-sm p-8 rounded-2xl border border-white/10">
-                {/* Decorative line with pattern */}
-                <motion.div
-                  className="absolute -left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-200 to-emerald-100"
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{ duration: 1, delay: 1 }}
-                >
-                  <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(16,185,129,0.1)_50%,transparent_100%)] bg-[length:1px_8px]" />
-                </motion.div>
-
-                <div className="pl-8">
-                  {/* Decorative corner elements */}
-                  <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-emerald-200 rounded-tl-lg" />
-                  <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-emerald-200 rounded-br-lg" />
-
-                  <motion.h1
-                    className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.7 }}
-                  >
-                    Transforming{" "}
-                    <span className="text-emerald-300 font-bold">
-                      Challenges
-                    </span>{" "}
-                    into{" "}
-                    <span className="text-emerald-300 font-bold">
-                      Opportunities
-                    </span>
-                  </motion.h1>
-
-                  <motion.div
-                    className="text-xl text-white leading-relaxed max-w-3xl space-y-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.9 }}
-                  >
-                    <p className="font-normal">
-                      TriPath Advisory is a Ghana-based consulting firm helping
-                      organisations align strategy with{" "}
-                      <span className="text-emerald-300 font-normal">
-                        sustainability
-                      </span>
-                      ,{" "}
-                      <span className="text-emerald-300 font-normal">
-                        inclusion
-                      </span>
-                      , and{" "}
-                      <span className="text-emerald-300 font-normal">
-                        impact
-                      </span>
-                      .
-                    </p>
-                    <p className="font-normal">
-                      We bridge global frameworks with local realities to
-                      co-create ESG solutions, policy reforms, and inclusive
-                      development models that work.
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    className="mt-8 flex gap-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 1.1 }}
-                  >
-                    <Button
-                      href="#services"
-                      variant="primary"
-                      size="lg"
-                      icon={ArrowRight}
-                      className="bg-emerald-500 hover:bg-emerald-600"
-                    >
-                      Explore Services
-                    </Button>
-                    <Button
-                      href="#contact"
-                      variant="outline"
-                      size="lg"
-                      className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm border-none"
-                    >
-                      Contact Us
-                    </Button>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+            Our Services
+          </motion.h1>
+          <motion.p
+            className="text-xl max-w-2xl mx-auto font-normal"
+            variants={animations.fadeIn}
+            initial="initial"
+            animate="animate"
+          >
+            Comprehensive ESG and sustainable development solutions for
+            organizations across Africa
+          </motion.p>
         </div>
       </section>
 
@@ -336,7 +200,7 @@ export default function ServicesPage() {
                       <Button
                         href="#services"
                         variant="primary"
-                        size="lg"
+                        size="sm"
                         icon={ArrowRight}
                         className="bg-emerald-600 hover:bg-emerald-700"
                       >
@@ -563,52 +427,6 @@ export default function ServicesPage() {
               </motion.div>
             ))}
           </motion.div>
-
-          {/* Client Testimonials */}
-          <motion.div
-            className="mt-20"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <div className="bg-gradient-to-br from-teal-900 to-teal-800 rounded-3xl p-12 relative overflow-hidden">
-              <div className="absolute inset-0 bg-[url('/assets/pattern.png')] opacity-10" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-6 mb-8">
-                  <img
-                    src="/assets/testimonials/sarah.jpg"
-                    alt="Sarah Johnson"
-                    className="w-20 h-20 rounded-full object-cover border-4 border-white"
-                  />
-                  <div>
-                    <h3 className="text-2xl font-bold text-white mb-2">
-                      Sarah Johnson
-                    </h3>
-                    <p className="text-teal-100">CEO, Global Impact Corp</p>
-                  </div>
-                </div>
-                <blockquote className="text-xl text-white leading-relaxed mb-8">
-                  "TriPath Advisory has been instrumental in our ESG
-                  transformation journey. Their expertise and deep understanding
-                  of both global frameworks and local contexts have helped us
-                  achieve remarkable results."
-                </blockquote>
-                <div className="flex items-center gap-2">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <svg
-                      key={star}
-                      className="w-6 h-6 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -635,7 +453,7 @@ export default function ServicesPage() {
               <Button
                 href="/contact"
                 variant="primary"
-                size="lg"
+                size="sm"
                 icon={ArrowRight}
                 className="bg-white text-primary hover:bg-white/90"
               >
@@ -644,7 +462,7 @@ export default function ServicesPage() {
               <Button
                 href="/brochure"
                 variant="outline"
-                size="lg"
+                size="sm"
                 icon={ArrowRight}
                 className="border-white text-white hover:bg-white/10"
               >

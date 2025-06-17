@@ -56,7 +56,7 @@ const Button = ({
   );
 
   const buttonContent = (
-    <>
+    <div className="flex items-center justify-center gap-2 ">
       {Icon && iconPosition === "left" && (
         <Icon className={cn("w-5 h-5", size === "sm" && "w-4 h-4")} />
       )}
@@ -68,29 +68,27 @@ const Button = ({
       {Icon && iconPosition === "right" && (
         <Icon className={cn("w-5 h-5", size === "sm" && "w-4 h-4")} />
       )}
-    </>
+    </div>
   );
 
-  const buttonVariants = {
-    initial: { scale: 1 },
-    hover: { scale: 1.05 },
-    tap: { scale: 0.98 },
+  const motionProps = {
+    whileHover: { scale: 1.05 },
+    whileTap: { scale: 0.98 },
+    transition: { duration: 0.2 },
   };
 
-  const MotionComponent = href ? motion(Link) : motion.button;
+  if (href) {
+    return (
+      <Link to={href} className={buttonStyles}>
+        <motion.div {...motionProps}>{buttonContent}</motion.div>
+      </Link>
+    );
+  }
 
   return (
-    <MotionComponent
-      href={href}
-      className={buttonStyles}
-      variants={buttonVariants}
-      initial="initial"
-      whileHover="hover"
-      whileTap="tap"
-      {...props}
-    >
-      {buttonContent}
-    </MotionComponent>
+    <button className={buttonStyles} {...props}>
+      <motion.div {...motionProps}>{buttonContent}</motion.div>
+    </button>
   );
 };
 

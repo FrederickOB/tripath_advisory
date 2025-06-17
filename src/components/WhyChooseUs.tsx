@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import Heading from "./Heading";
 import { animations } from "@/lib/animation";
 import { useState } from "react";
+import Button from "./ui/Button";
+import { ArrowRight } from "lucide-react";
 
 function WhyChooseUs() {
   const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>(
@@ -186,27 +188,17 @@ function WhyChooseUs() {
         </motion.div>
 
         {/* CTA Button */}
+
         <motion.div className="mt-16 text-center" variants={animations.fadeIn}>
-          <motion.button
-            className="inline-flex items-center space-x-2 px-8 py-4 text-white rounded-full font-semibold transition-colors shadow-lg"
-            style={{ backgroundColor: "var(--color-primary)" }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
+          <Button
+            href="/contact"
+            variant="primary"
+            size="md"
+            icon={ArrowRight}
+            className="shadow-lg"
           >
-            <span>Learn More About Our Approach</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </motion.button>
+            Learn More About Our Approach
+          </Button>
         </motion.div>
       </motion.div>
     </section>
