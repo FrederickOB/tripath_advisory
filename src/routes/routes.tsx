@@ -16,7 +16,7 @@ export default function MyRoutes() {
         <Route path="contact" element={<ContactPage />} />
         <Route path="services" element={<ServicesPage />} />
         <Route path="insights" element={<InsightsPage />} />
-        <Route path="insight/:id" element={<InsightPage />} />
+        <Route path="insights/:id" element={<InsightPage />} />
       </Route>
       {/* <Route path="about" element={<About />} /> */}
 
