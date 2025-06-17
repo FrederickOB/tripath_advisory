@@ -28,9 +28,8 @@ const Insights = () => {
             align="left"
           />
           <div className="md:max-w-lg text-slate-600 text-lg">
-            From planning to progress tracking, Dash gives CEOs, founders, and
-            teams the tools they need to manage tasks, lead projects, and hit
-            goals.
+            Discover our latest research and practical guidance on
+            sustainability and policy.
           </div>
         </div>
 
