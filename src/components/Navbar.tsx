@@ -47,7 +47,7 @@ const Logo: React.FC<{ scrolled: boolean }> = ({ scrolled }) => (
       } rounded-lg flex items-center justify-center transition-colors duration-300`}
     >
     </div> */}
-    <img src="/src/assets/logo.png" alt="logo" className="w-6 " />
+    <img src="/assets/logo.png" alt="logo" className="w-6 " />
     <h2
       className={`text-lg font-bold font-playfair ${
         scrolled ? "text-gray-900" : "text-white"

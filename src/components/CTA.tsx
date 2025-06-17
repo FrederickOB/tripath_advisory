@@ -2,6 +2,8 @@ import { animations } from "@/lib/animation";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 
+const MotionLink = motion(Link);
+
 export default function CTA() {
   return (
     <section
@@ -43,7 +45,7 @@ export default function CTA() {
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <motion.div className="text-center" variants={animations.fadeIn}>
-                <motion.Link
+                <MotionLink
                   to="/contact"
                   className="inline-flex items-center space-x-2 px-8 py-4 bg-blue-600 text-white rounded-full font-semibold hover:bg-emerald-700 transition-colors shadow-lg"
                   whileHover={{ scale: 1.05 }}
@@ -62,10 +64,10 @@ export default function CTA() {
                       clipRule="evenodd"
                     />
                   </svg>
-                </motion.Link>
+                </MotionLink>
               </motion.div>
               <motion.div className="text-center" variants={animations.fadeIn}>
-                <motion.Link
+                <MotionLink
                   to="/services"
                   className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-slate-700/80 hover:bg-slate-600 rounded-full transition-all duration-200 shadow-lg hover:shadow-slate-500/20"
                   whileHover={{ scale: 1.05 }}
@@ -84,7 +86,7 @@ export default function CTA() {
                       clipRule="evenodd"
                     />
                   </svg>
-                </motion.Link>
+                </MotionLink>
               </motion.div>
             </div>
 

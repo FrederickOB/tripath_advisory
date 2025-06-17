@@ -82,7 +82,7 @@ const Hero = () => {
             }`}
           >
             <img
-              src="src/assets/hero.png"
+              src="/assets/hero.png"
               alt="Sustainable development landscape with modern architecture and green spaces"
               className="w-full h-full object-cover object-right"
               loading="eager"

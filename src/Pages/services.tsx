@@ -168,7 +168,7 @@ export default function ServicesPage() {
             transition={{ duration: 2, ease: "easeOut" }}
           >
             <img
-              src="/src/assets/girl.jpg"
+              src="/assets/girl.jpg"
               alt="Sustainable development landscape"
               className="w-full h-full object-cover object-center"
             />
@@ -557,11 +557,11 @@ export default function ServicesPage() {
             viewport={{ once: true }}
           >
             <div className="bg-gradient-to-br from-teal-900 to-teal-800 rounded-3xl p-12 relative overflow-hidden">
-              <div className="absolute inset-0 bg-[url('/src/assets/pattern.png')] opacity-10" />
+              <div className="absolute inset-0 bg-[url('/assets/pattern.png')] opacity-10" />
               <div className="relative z-10">
                 <div className="flex items-center gap-6 mb-8">
                   <img
-                    src="/src/assets/testimonials/sarah.jpg"
+                    src="/assets/testimonials/sarah.jpg"
                     alt="Sarah Johnson"
                     className="w-20 h-20 rounded-full object-cover border-4 border-white"
                   />
@@ -598,7 +598,7 @@ export default function ServicesPage() {
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-teal-900 to-teal-800 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/src/assets/pattern.png')] opacity-10" />
+        <div className="absolute inset-0 bg-[url('/assets/pattern.png')] opacity-10" />
         <div className="container mx-auto px-6 relative">
           <motion.div
             className="max-w-4xl mx-auto text-center text-white"

@@ -13,7 +13,7 @@ function WhyChooseUs() {
       title: "Industry Expertise",
       description:
         "With specialists across environmental policy, social governance, and sustainable finance, we bring deep sector knowledge to every project.",
-      imageSrc: "src/assets/whychooseus/industry_expertise.png",
+      imageSrc: "/assets/whychooseus/industry_expertise.png",
       imagePosition: "background",
     },
     {
@@ -22,25 +22,25 @@ function WhyChooseUs() {
         "Our recommendations are backed by comprehensive research and analysis, ensuring evidence-based strategies that deliver measurable results.",
       className:
         "md:col-span-1 lg:col-span-2 bg-gradient-to-br from-white to-emerald-50",
-      imageSrc: "src/assets/whychooseus/data_driven.png",
+      imageSrc: "/assets/whychooseus/data_driven.png",
     },
     {
       title: "Stakeholder Engagement",
       description:
         "We excel at bringing diverse voices to the table, ensuring inclusive solutions that address the needs of all affected communities.",
-      imageSrc: "src/assets/whychooseus/stakeholder_engagement.png",
+      imageSrc: "/assets/whychooseus/stakeholder_engagement.png",
     },
     {
       title: "Regulatory Compliance",
       description:
         "Stay ahead of evolving ESG regulations with our comprehensive compliance frameworks and future-proofed sustainability strategies.",
-      imageSrc: "src/assets/whychooseus/regulatory.png",
+      imageSrc: "/assets/whychooseus/regulatory.png",
     },
     {
       title: "Sustainable Growth",
       description:
         "We help organizations achieve long-term prosperity by aligning business objectives with environmental stewardship and social responsibility.",
-      imageSrc: "src/assets/whychooseus/sustainable_growth.png",
+      imageSrc: "/assets/whychooseus/sustainable_growth.png",
     },
   ];
 

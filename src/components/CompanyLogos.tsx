@@ -1,8 +1,8 @@
-import logo1 from "/src/assets/company_logo/GCM.png";
-import logo2 from "/src/assets/company_logo/adoa.png";
-import logo3 from "/src/assets/company_logo/bible_league.png";
-import logo4 from "/src/assets/company_logo/bsg.png";
-import logo5 from "/src/assets/company_logo/cbod.png";
+// import logo1 from "/src/assets/company_logo/GCM.png";
+// import logo2 from "/src/assets/company_logo/adoa.png";
+// import logo3 from "/src/assets/company_logo/bible_league.png";
+// import logo4 from "/src/assets/company_logo/bsg.png";
+// import logo5 from "/src/assets/company_logo/cbod.png";
 // import logo6 from "/src/assets/company_logo/gbc.png";
 // import logo7 from "/src/assets/company_logo/lic.png";
 // import logo8 from "/src/assets/company_logo/mcg.png";
@@ -13,11 +13,11 @@ import { useState } from "react";
 // import { AnimatedHeading } from "./Heading";
 
 const logos = [
-  { src: logo1, alt: "GCM logo", name: "GCM" },
-  { src: logo2, alt: "ADOA logo", name: "ADOA" },
-  { src: logo3, alt: "Bible League logo", name: "Bible League" },
-  { src: logo4, alt: "BSG logo", name: "BSG" },
-  { src: logo5, alt: "CBOD logo", name: "CBOD" },
+  { src: "/assets/company_logo/GCM.png", alt: "GCM logo", name: "GCM" },
+  { src: "/assets/company_logo/adoa.png", alt: "ADOA logo", name: "ADOA" },
+  { src: "/assets/company_logo/bible_league.png", alt: "Bible League logo", name: "Bible League" },
+  { src: "/assets/company_logo/bsg.png", alt: "BSG logo", name: "BSG" },
+  { src: "/assets/company_logo/cbod.png", alt: "CBOD logo", name: "CBOD" },
   // { src: logo6, alt: "GBC logo", name: "GBC" },
   // { src: logo7, alt: "LIC logo", name: "LIC" },
   // { src: logo8, alt: "MCG logo", name: "MCG" },

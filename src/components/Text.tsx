@@ -50,7 +50,7 @@ export default function Text() {
                 }`}
               >
                 <img
-                  src="src/assets/girl.jpg"
+                  src="/assets/girl.jpg"
                   alt="Professional consultant working on sustainable development projects"
                   className="w-full h-full object-cover"
                   loading="lazy"
