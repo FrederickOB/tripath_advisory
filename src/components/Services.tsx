@@ -94,7 +94,7 @@ const Services = () => {
               />
             ))}
           </div>
-          <div className="overflow-hidden rounded-xl">
+          <div className="overflow-hidden hidden md:block rounded-xl">
             <AnimatePresence mode="wait">
               <motion.img
                 key={services[activeIndex].title}
@@ -162,6 +162,25 @@ const ServiceCard: React.FC<{
             {service.description}
           </p>
         </div>
+      </div>
+      <div
+        className={clsx(
+          isActive ? "md:hidden block" : "hidden",
+          " overflow-hidden rounded-xl"
+        )}
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={service.title}
+            src={service.image}
+            alt={service.title}
+            className="w-full h-full object-cover aspect-video"
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.5 }}
+          />
+        </AnimatePresence>{" "}
       </div>
     </motion.div>
   );

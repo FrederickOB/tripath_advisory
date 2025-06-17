@@ -123,7 +123,7 @@ const Hero = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <motion.span
-                className="inline-block px-4 py-1 border rounded-full bg-white/20 text-sm font-medium"
+                className="inline-block text-[0.55rem] px-2 md:px-4 py-1 border rounded-full bg-white/20 md:text-sm font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1 }}
@@ -163,7 +163,7 @@ const Hero = () => {
             </motion.div>
 
             <motion.p
-              className="text-xl md:text-2xl mb-8 text-gray-100 leading-relaxed font-normal"
+              className=" md:text-2xl mb-8 text-gray-100 leading-relaxed font-normal"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1 }}
@@ -206,7 +206,7 @@ const Hero = () => {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-20"
+        className="absolute hidden bottom-10 left-1/2 transform -translate-x-1/2 md:flex flex-col items-center z-20"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2, duration: 0.8 }}

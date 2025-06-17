@@ -97,7 +97,7 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-          <div className="col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-8">
             <div>
               <h4
                 className="text-sm font-semibold mb-3"

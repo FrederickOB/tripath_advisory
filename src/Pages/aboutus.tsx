@@ -64,7 +64,7 @@ function AboutUs() {
         <div className="absolute inset-0 bg-dark/30" />
         <div className="relative z-10 text-center text-white px-4">
           <motion.h1
-            className="text-5xl md:text-6xl font-bold mb-6"
+            className="text-3xl md:text-6xl font-bold mb-6"
             variants={animations.fadeIn}
             initial="initial"
             animate="animate"
@@ -72,7 +72,7 @@ function AboutUs() {
             About TriPath Advisory
           </motion.h1>
           <motion.p
-            className="text-xl max-w-2xl mx-auto font-normal"
+            className="md:text-xl max-w-2xl mx-auto font-normal"
             variants={animations.fadeIn}
             initial="initial"
             animate="animate"

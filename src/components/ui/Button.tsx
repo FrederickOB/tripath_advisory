@@ -10,7 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: "left" | "right";
   href?: string;
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   isLoading?: boolean;
   fullWidth?: boolean;
 }
@@ -42,9 +42,9 @@ const Button = ({
   };
 
   const sizes = {
-    sm: "text-sm px-4 py-2",
-    md: "text-base px-6 py-3",
-    lg: "text-lg px-8 py-4",
+    sm: "text-[0.55rem] md:text-sm px-4 py-2",
+    md: "text-xm md:text-base px-6 py-3",
+    lg: "text-sm md:text-lg px-8 py-4",
   };
 
   const buttonStyles = cn(

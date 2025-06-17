@@ -69,9 +69,9 @@ const MobileNavigation = ({
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className="fixed inset-0 bg-white z-40 pt-20 px-6"
+        className="fixed inset-0  h-fit z-50 "
       >
-        <nav className="flex flex-col space-y-6">
+        <nav className="flex bg-white flex-col space-y-6 mt-16 p-6 shadow-xl">
           {items.map((item) => (
             <motion.a
               key={item.label}
@@ -158,7 +158,7 @@ export default function Navbar() {
         <Button
           variant="ghost"
           size="sm"
-          className="lg:hidden mobile-menu-button p-2"
+          className="lg:hidden  mobile-menu-button p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           <div className="w-6 h-5 relative flex flex-col justify-between">

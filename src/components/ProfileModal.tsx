@@ -41,7 +41,7 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
-            className="inline-block w-full max-h-[90vh] max-w-6xl p-6 my-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl relative"
+            className="inline-block w-full max-h-[90vh] max-w-6xl p-6 my-8 text-left align-middle overflow-y-auto transition-all transform bg-white shadow-xl rounded-2xl relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -49,12 +49,12 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
               onClick={onClose}
               variant="ghost"
               size="sm"
-              className="absolute top-4 right-4 p-2 hover:bg-gray-100"
+              className="absolute top-2 right-2 z-50 hover:bg-gray-100"
               icon={X}
               aria-label="Close"
             />
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-8 ">
               {/* Image section */}
               <div className="relative  rounded-xl overflow-hidden">
                 <img
@@ -65,7 +65,7 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
               </div>
 
               {/* Content section */}
-              <div className="flex flex-col h-[80vh] overflow-y-auto">
+              <div className="flex flex-col h-[80vh] ">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">
                   {member.name}
                 </h2>
@@ -76,7 +76,7 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
                   <p className="text-gray-600 mb-6">{member.bio}</p>
                   {member.fullProfile && (
                     <div className="mt-6">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
                         Full Profile
                       </h3>
                       <p className="text-gray-600 whitespace-pre-line">

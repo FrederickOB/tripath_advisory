@@ -64,7 +64,7 @@ export default function Text() {
             </motion.div>
             {/* Decorative elements */}
             <div
-              className="absolute -bottom-6 -right-6 w-32 h-32 bg-emerald-100/30 rounded-full blur-3xl"
+              className="hidden md:block absolute -bottom-6 -right-6 w-32 h-32 bg-emerald-100/30 rounded-full blur-3xl"
               aria-hidden="true"
             />
             <div
