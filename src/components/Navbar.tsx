@@ -86,7 +86,7 @@ const MobileNavigation = ({
           ))}
           <Button
             variant="primary"
-            className="mt-4 font-normal text-sm"
+            className="mt-4 font-normal text-white text-sm"
             onClick={onClose}
           >
             Book Appointment

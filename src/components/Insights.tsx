@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { insights } from "@/constants";
 import Button from "./ui/Button";
 import Heading from "./Heading";
+import { ArrowRight } from "lucide-react";
 
 const Insights = () => {
   return (
@@ -63,9 +64,9 @@ const Insights = () => {
                 <Button
                   href="#"
                   variant="link"
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline justify-start items-center"
                 >
-                  Read More
+                  Read More <ArrowRight className="size-3" />
                 </Button>
               </div>
             </motion.div>
