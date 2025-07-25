@@ -20,13 +20,13 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative top-0 min-h-screen flex items-end overflow-hidden"
+      className="relative pt-20 min-h-screen lg:h-screen flex items-end overflow-hidden"
       aria-label="Hero section"
     >
       {/* Background with parallax effect */}
-      <div className="absolute inset-0 z-0">
-        {/* Animated gradient overlay */}
-        <motion.div
+      {/* <div className="absolute inset-0 z-0"> */}
+      {/* Animated gradient overlay */}
+      {/* <motion.div
           className="absolute inset-0 z-20"
           // style={{
           //   background: `linear-gradient(to bottom right, color-mix(in srgb, var(--color-primary) 95%, black), color-mix(in srgb, var(--color-primary) 90%, black), color-mix(in srgb, var(--color-primary) 95%, black))`,
@@ -35,91 +35,38 @@ const Hero = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
           aria-hidden="true"
-        />
+        /> */}
 
-        {/* Animated geometric shapes */}
+      {/* Animated geometric shapes */}
+      {/*  */}
+
+      {/* Parallax background image */}
+      <motion.div
+        className="absolute inset-0 z-10"
+        // style={{ y: scrollY * 0.2 }}
+      >
         <div
-          className="absolute inset-0 z-30 overflow-hidden opacity-20 mix-blend-soft-light"
-          aria-hidden="true"
+          className={`w-full h-full transition-opacity duration-500 ${
+            videoLoaded ? "opacity-100" : "opacity-0"
+          }`}
         >
-          <motion.div
-            className="absolute top-[10%] right-[15%] w-64 h-64 rounded-full"
-            style={{
-              backgroundColor:
-                "color-mix(in srgb, var(--color-secondary) 30%, transparent)",
-            }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.3, 0.2],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-[20%] left-[10%] w-96 h-96 rounded-full"
-            style={{
-              backgroundColor:
-                "color-mix(in srgb, var(--color-primary) 20%, transparent)",
-            }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.1, 0.2, 0.1],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-          />
-          <motion.div
-            className="absolute top-[40%] left-[30%] w-48 h-48 rounded-full bg-amber-300/20"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{
-              scale: [0.8, 1, 0.8],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: 7,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2,
-            }}
+          <video
+            ref={videoRef}
+            src="/assets/hero.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-screen object-cover object-top"
+            onLoadedData={handleVideoLoad}
+            onError={handleVideoError}
           />
         </div>
-
-        {/* Parallax background image */}
-        <motion.div
-          className="absolute inset-0 z-10 "
-          style={{ y: scrollY * 0.2 }}
-        >
-          <div
-            className={`w-full h-full transition-opacity duration-500 ${
-              videoLoaded ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <video
-              ref={videoRef}
-              src="/assets/hero.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover object-top"
-              onLoadedData={handleVideoLoad}
-              onError={handleVideoError}
-            />
-          </div>
-          {!videoLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-300 animate-pulse" />
-          )}
-        </motion.div>
-      </div>
+        {!videoLoaded && (
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-300 animate-pulse" />
+        )}
+      </motion.div>
+      {/* </div> */}
 
       {/* Content */}
       <div className="container mx-auto px-6 z-20 py-20 relative">

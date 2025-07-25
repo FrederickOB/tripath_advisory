@@ -116,7 +116,10 @@ const MobileNavigation = ({
 
 // Header Component
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  // FIX: Set initial scrolled state based on window.scrollY
+  const [scrolled, setScrolled] = useState(() =>
+    typeof window !== "undefined" ? window.scrollY > 50 : false
+  );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -125,6 +128,9 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll);
+    // FIX: Set scrolled state on mount in case page is loaded scrolled down
+    handleScroll();
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

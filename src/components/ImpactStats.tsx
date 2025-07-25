@@ -115,7 +115,9 @@ export const AnimatedNumber = ({
       variants={itemVariants}
     >
       {prefix && (
-        <span className={`${textSizeMap[textSize].prefix} text-emerald-600 font-light`}>
+        <span
+          className={`${textSizeMap[textSize].prefix} text-emerald-600 font-light`}
+        >
           {prefix}
         </span>
       )}
@@ -125,7 +127,9 @@ export const AnimatedNumber = ({
         {count}
       </span>
       {suffix && (
-        <span className={`${textSizeMap[textSize].suffix} text-emerald-600 font-light`}>
+        <span
+          className={`${textSizeMap[textSize].suffix} text-emerald-600 font-light`}
+        >
           {suffix}
         </span>
       )}
