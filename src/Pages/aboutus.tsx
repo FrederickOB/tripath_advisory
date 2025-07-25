@@ -4,34 +4,37 @@ import { motion } from "framer-motion";
 import { animations } from "@/lib/animation";
 import ProfileModal from "@/components/ProfileModal";
 import { team } from "@/constants";
+import { AnimatedNumber, stats } from "@/components/ImpactStats";
+import Button from "@/components/ui/Button";
+import { ArrowRight, Linkedin } from "lucide-react";
 
 function AboutUs() {
   const [selectedMember, setSelectedMember] = useState<(typeof team)[0] | null>(
     null
   );
 
-  const stats = [
-    {
-      number: "15+",
-      label: "Years of Experience",
-      description: "Delivering excellence in ESG consulting",
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        staggerChildren: 0.2,
+      },
     },
-    {
-      number: "200+",
-      label: "Projects Completed",
-      description: "Across diverse industries and sectors",
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1],
+      },
     },
-    {
-      number: "50+",
-      label: "Global Partners",
-      description: "Building sustainable networks worldwide",
-    },
-    {
-      number: "95%",
-      label: "Client Satisfaction",
-      description: "Based on our service delivery metrics",
-    },
-  ];
+  };
 
   // const advisoryBoard = [
   //   {
@@ -139,27 +142,30 @@ function AboutUs() {
             description="Making a difference through measurable results"
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            aria-label="Key statistics"
+          >
             {stats.map((stat, index) => (
               <motion.div
-                key={stat.label}
-                className="bg-white p-6 rounded-xl shadow-lg text-center"
-                variants={animations.fadeIn}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                key={index}
+                className="text-center"
+                variants={itemVariants}
               >
-                <h3 className="text-4xl font-bold text-teal-800 mb-2">
-                  {stat.number}
-                </h3>
-                <h4 className="text-lg font-semibold text-gray-800 mb-2">
-                  {stat.label}
-                </h4>
-                <p className="text-gray-600">{stat.description}</p>
+                <AnimatedNumber
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  prefix={stat.prefix}
+                  textSize="xl"
+                />
+                <p className="mt-4 text-slate-600 font-medium">{stat.label}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -172,17 +178,16 @@ function AboutUs() {
             description="Meet the experts driving our success"
             // badgeColor="amber"
           />
-          <div className="grid md:grid-cols-3 gap-8 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             {team.map((member, index) => (
               <motion.div
                 key={member.name}
-                className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-transform hover:scale-105"
+                className="bg-white rounded-xl flex flex-col shadow-lg overflow-hidden transform transition-transform hover:scale-105"
                 variants={animations.fadeIn}
                 initial="initial"
                 whileInView="animate"
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                onClick={() => setSelectedMember(member)}
               >
                 <div className="aspect-w-3 aspect-h-4">
                   <img
@@ -192,14 +197,35 @@ function AboutUs() {
                   />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">
-                    {member.name}
-                  </h3>
+                  <div className="flex items-center justify-between mb-1 gap-2">
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {member.name}
+                    </h3>
+                    {member.linkedin_link && (
+                      <a
+                        href={member.linkedin_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`LinkedIn profile of ${member.name}`}
+                        className="inline-flex cursor-pointer  bg-blue-600 rounded p-1 items-center text-white hover:bg-blue-800 transition-colors"
+                      >
+                        <Linkedin className="size-4" />
+                      </a>
+                    )}
+                  </div>
                   <p className="text-secondary font-medium mb-3">
                     {member.role}
                   </p>
                   <p className="text-gray-500">{member.bio}</p>
                 </div>
+
+                <Button
+                  onClick={() => setSelectedMember(member)}
+                  variant="link"
+                  className="text-primary cursor-pointer mt-auto  hover:underline justify-start items-center"
+                >
+                  Read More <ArrowRight className="size-3" />
+                </Button>
               </motion.div>
             ))}
           </div>

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../constants";
 import { animations } from "@/lib/animation";
 import clsx from "clsx";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import Button from "@/components/ui/Button";
 
 // Logo Component
@@ -33,23 +33,40 @@ const Navigation = ({
 }: {
   items: { label: string; path: string }[];
   scrolled: boolean;
-}) => (
-  <nav className="hidden lg:flex space-x-8">
-    {items.map((item) => (
-      <motion.a
-        key={item.label}
-        href={item.path}
-        className={`${scrolled ? "text-gray-600" : "text-white"} hover:${
-          scrolled ? "text-gray-900" : "text-emerald-300"
-        } transition-colors duration-300 font-normal`}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {item.label}
-      </motion.a>
-    ))}
-  </nav>
-);
+}) => {
+  const location = useLocation();
+
+  return (
+    <nav className="hidden lg:flex space-x-8">
+      {items.map((item) => {
+        const isActive = location.pathname === item.path;
+        return (
+          <motion.a
+            key={item.label}
+            href={item.path}
+            className={clsx(
+              scrolled ? "text-gray-600" : "text-white",
+              "relative transition-colors duration-300 font-normal hover:text-emerald-400"
+            )}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {item.label}
+            {isActive && (
+              <motion.div
+                layoutId="nav-underline"
+                className="absolute left-0 -bottom-1 h-[2px] w-full bg-emerald-500 rounded"
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+            )}
+          </motion.a>
+        );
+      })}
+    </nav>
+  );
+};
 
 // Mobile Navigation Component
 const MobileNavigation = ({
@@ -144,10 +161,8 @@ export default function Navbar() {
           <Button
             variant="primary"
             className={clsx(
-              scrolled
-                ? ""
-                : "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm",
-              " font-normal text-sm"
+              scrolled ? "" : "bg-white/20  hover:bg-white/30 backdrop-blur-sm",
+              " font-normal text-sm text-white"
             )}
           >
             Book Appointment

@@ -44,6 +44,13 @@ function WhyChooseUs() {
         "We help organizations achieve long-term prosperity by aligning business objectives with environmental stewardship and social responsibility.",
       imageSrc: "/assets/whychooseus/sustainable_growth.png",
     },
+    {
+      title: "Social Policy, Equity & Inclusion",
+      description:
+        "We turn global inclusion standards into actionable programmes that boost gender equity, empower youth and elevate under‑represented voices across Ghana and Africa.",
+
+      imageSrc: "/assets/whychooseus/social_policy.png",
+    },
   ];
 
   const handleImageLoad = (title: string) => {

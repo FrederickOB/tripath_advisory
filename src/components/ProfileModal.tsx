@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { Linkedin, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 interface ProfileModalProps {
@@ -11,6 +11,7 @@ interface ProfileModalProps {
     bio: string;
     image: string;
     fullProfile?: string;
+    linkedin_link?: string;
   };
 }
 
@@ -41,7 +42,7 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
-            className="inline-block w-full max-h-[90vh] max-w-6xl p-6 my-8 text-left align-middle overflow-y-auto transition-all transform bg-white shadow-xl rounded-2xl relative"
+            className="inline-block w-full h-full md:max-h-[90vh] max-w-6xl p-6 my-8 text-left align-middle  transition-all transform bg-white shadow-xl rounded-2xl relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -65,17 +66,30 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
               </div>
 
               {/* Content section */}
-              <div className="flex flex-col h-[80vh] ">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                  {member.name}
-                </h2>
+              <div className="flex flex-col md:h-[80vh] ">
+                <div className="flex items-center  mb-1 gap-4">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                    {member.name}
+                  </h2>
+                  {member.linkedin_link && (
+                    <a
+                      href={member.linkedin_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`LinkedIn profile of ${member.name}`}
+                      className="inline-flex bg-blue-600 rounded p-1 items-center text-white hover:bg-blue-800 transition-colors"
+                    >
+                      <Linkedin className="size-4" />
+                    </a>
+                  )}
+                </div>
                 <p className="text-xl text-teal-600 font-medium mb-6">
                   {member.role}
                 </p>
                 <div className="prose prose-lg">
-                  <p className="text-gray-600 mb-6">{member.bio}</p>
+                  <p className="text-gray-600 mb-6 ">{member.bio}</p>
                   {member.fullProfile && (
-                    <div className="mt-6">
+                    <div className="mt-6 md:overflow-y-auto md:h-[60vh]">
                       <h3 className="text-xl font-semibold text-gray-900 mb-2">
                         Full Profile
                       </h3>

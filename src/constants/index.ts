@@ -241,6 +241,8 @@ export const team = [
   {
     name: "Samuel Kweku Kumah",
     role: "ESG & Sustainable Finance Lead",
+    linkedin_link:
+      "https://www.linkedin.com/in/samuel-kweku-kumah-mba-b06559a5/",
     bio: "Specialises in climate risk, sustainability reporting, and ESG strategy. Speaker at UNEP-FI and author of multiple published insights",
     image: "/assets/samuel.jpg",
     fullProfile: `
@@ -286,6 +288,8 @@ Samuel is a passionate advocate for ethical leadership and youth empowerment, ac
   {
     name: "Patricia Ohenewaa Akuffo-Henaku",
     role: "Policy & Health Systems Advisor",
+    linkedin_link:
+      "https://www.linkedin.com/in/patricia-ohenewaa-akuffo-henaku-mph-8a4059a5/",
     bio: "Expert in public health policy, social protection systems, and stakeholder engagement. Co-author of national research for the World Bank and FHI360.",
     image: "/assets/patricia.jpg",
     fullProfile: `Patricia Ohenewaa Akuffo-Henaku brings extensive expertise in public health policy and social protection systems, with a focus on sustainable healthcare solutions.
@@ -311,6 +315,7 @@ Education:
   {
     name: "Ebenezer Kwesi Bosomprah",
     role: "Gender & Community Development Lead",
+    linkedin_link: "https://www.linkedin.com/in/ebenezer-bosomprah-13765830/",
     bio: "Researcher and practitioner in social justice, youth empowerment, and rural inclusion. Leads Oxfam Ghana's gender-focused innovation initiatives.",
     image: "/assets/eben.jpg",
     fullProfile: `Ebenezer Kwesi Bosomprah is a Ph.D. candidate at the Institute of African Studies, University of Ghana. His research interests include childhood studies, juvenile justice, gender, and social inclusion. His doctoral thesis critically examines the concept of child offenders within Ghana's juvenile correctional system, employing a social constructionist framework. Ebenezer holds an M.Phil in Social Work and a Bachelor of Arts in Social Work from the University of Ghana.

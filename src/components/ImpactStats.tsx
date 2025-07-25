@@ -1,6 +1,34 @@
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+
+type TextSize = "base" | "lg" | "xl";
+
+const textSizeMap: Record<
+  TextSize,
+  {
+    prefix: string;
+    count: string;
+    suffix: string;
+  }
+> = {
+  base: {
+    prefix: "text-lg md:text-xl",
+    count: "text-xl md:text-2xl",
+    suffix: "text-base md:text-lg",
+  },
+  lg: {
+    prefix: "text-2xl md:text-3xl",
+    count: "text-2xl md:text-3xl lg:text-4xl",
+    suffix: "text-xl md:text-2xl",
+  },
+  xl: {
+    prefix: "text-3xl md:text-4xl",
+    count: "text-4xl md:text-5xl lg:text-6xl",
+    suffix: "text-2xl md:text-3xl",
+  },
+};
 
 interface StatItem {
   value: number;
@@ -43,10 +71,14 @@ export const AnimatedNumber = ({
   value,
   suffix,
   prefix,
+  className,
+  textSize = "base",
 }: {
   value: number;
   suffix?: string;
   prefix?: string;
+  className?: string;
+  textSize?: TextSize;
 }) => {
   const [count, setCount] = useState(0);
   const [ref, inView] = useInView({
@@ -79,19 +111,21 @@ export const AnimatedNumber = ({
   return (
     <motion.div
       ref={ref}
-      className="flex items-baseline justify-center"
+      className={cn(className, "flex items-baseline justify-center")}
       variants={itemVariants}
     >
       {prefix && (
-        <span className="text-2xl md:text-3xl text-emerald-600 font-light">
+        <span className={`${textSizeMap[textSize].prefix} text-emerald-600 font-light`}>
           {prefix}
         </span>
       )}
-      <span className="text-xl md:text-2xl lg:text-3xl font-bold bg-emerald-600  bg-clip-text text-transparent">
+      <span
+        className={`${textSizeMap[textSize].count} font-bold bg-emerald-600 bg-clip-text text-transparent`}
+      >
         {count}
       </span>
       {suffix && (
-        <span className="text-lg md:text-xl text-emerald-600 font-light">
+        <span className={`${textSizeMap[textSize].suffix} text-emerald-600 font-light`}>
           {suffix}
         </span>
       )}
