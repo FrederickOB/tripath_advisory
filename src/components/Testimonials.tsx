@@ -1,37 +1,6 @@
 import { motion } from "framer-motion";
 import Heading from "./Heading";
-
-interface Testimonial {
-  name: string;
-  position: string;
-  company: string;
-  image: string;
-  text: string;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    name: "Sarah Johnson",
-    position: "Sustainability Director",
-    company: "Global Impact Corp",
-    image: "/testimonials/sarah.jpg",
-    text: "TriPath Advisory transformed our approach to sustainability. Their expertise in ESG frameworks and local implementation helped us achieve our sustainability goals while creating meaningful impact in our communities.",
-  },
-  {
-    name: "Kwame Mensah",
-    position: "CEO",
-    company: "AfriTech Solutions",
-    image: "/testimonials/kwame.jpg",
-    text: "Working with TriPath Advisory has been transformative. Their deep understanding of both global standards and local contexts helped us develop strategies that are both ambitious and achievable.",
-  },
-  {
-    name: "Amina Osei",
-    position: "Development Manager",
-    company: "West African Ventures",
-    image: "/testimonials/amina.jpg",
-    text: "The team at TriPath Advisory brings a unique perspective to sustainable development. Their ability to bridge international best practices with local realities has been invaluable to our organization.",
-  },
-];
+import { useTestimonials } from "@/hooks/useSanityData";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -57,7 +26,8 @@ const itemVariants = {
 };
 
 export default function Testimonials() {
-  return (
+  const { data: testimonials } = useTestimonials();
+  return testimonials && testimonials.length > 0 ? (
     <section className="relative overflow-hidden bg-primary/5 py-20">
       {/* Enhanced Background Patterns */}
       <div className="absolute inset-0">
@@ -145,7 +115,7 @@ export default function Testimonials() {
               <div className="flex items-center relative">
                 <div className="relative size-24 rounded-full overflow-hidden mr-4 ">
                   <img
-                    src={testimonial.image}
+                    src={testimonial?.image.url}
                     alt={testimonial.name}
                     className="object-cover"
                   />
@@ -170,5 +140,5 @@ export default function Testimonials() {
         </motion.div>
       </div>
     </section>
-  );
+  ) : null;
 }

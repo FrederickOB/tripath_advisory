@@ -8,6 +8,7 @@ import client from './client'
 import client_service from './client_service'
 import testimonial from './testimonial'
 import impactStat from './impactStat'
+import bio from './bio'
 
 export const schemaTypes = [
   author,
@@ -20,4 +21,5 @@ export const schemaTypes = [
   client_service,
   testimonial,
   impactStat,
+  bio,
 ]

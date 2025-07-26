@@ -1,36 +1,22 @@
 import { useParams, Link } from "react-router";
 import { motion } from "framer-motion";
-import { insights } from "@/constants";
+import { useInsightBySlug } from "@/hooks/useSanityData";
 import { ArrowLeft, Calendar, User } from "lucide-react";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
+import { PortableText } from "@portabletext/react";
 
 export default function InsightPage() {
-  const { id } = useParams();
-  const insight = insights.find((i) => i.id === id);
+  const { slug } = useParams();
+  const { data, loading, error } = useInsightBySlug(slug || "");
 
-  if (!insight) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+      </div>
+    );
+  }
+
+  if (error || !data) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50">
         <div className="text-center">
@@ -52,6 +38,8 @@ export default function InsightPage() {
     );
   }
 
+  const { insight, relatedInsights } = data;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
@@ -60,9 +48,9 @@ export default function InsightPage() {
         <div className="container mx-auto px-6 relative">
           <motion.div
             className="max-w-4xl mx-auto"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <Link
               to="/insights"
@@ -72,11 +60,20 @@ export default function InsightPage() {
               Back to Insights
             </Link>
 
-            <motion.div variants={itemVariants}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="flex items-center gap-4 mb-6">
-                <span className="px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-700">
-                  {insight.category}
-                </span>
+                {insight.categories?.map((category) => (
+                  <span
+                    key={category._id}
+                    className="px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-700"
+                  >
+                    {category.title}
+                  </span>
+                ))}
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
                 {insight.title}
@@ -84,16 +81,20 @@ export default function InsightPage() {
               <div className="flex flex-wrap items-center gap-6 text-slate-600 mb-8">
                 <div className="flex items-center gap-2">
                   <User className="w-5 h-5" />
-                  <span>{insight.author}</span>
+                  <span>{insight.author?.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
-                  <span>{insight.date}</span>
+                  <span>
+                    {new Date(
+                      insight.publishedAt as string
+                    ).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
               <div className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                 <img
-                  src={insight.image}
+                  src={insight.mainImage?.url}
                   alt={insight.title}
                   className="object-cover w-full h-full"
                 />
@@ -108,34 +109,58 @@ export default function InsightPage() {
         <div className="container mx-auto px-6">
           <motion.div
             className="max-w-4xl mx-auto"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             <motion.div
-              variants={itemVariants}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
               className="prose prose-lg prose-emerald max-w-none"
-              dangerouslySetInnerHTML={{ __html: insight.content }}
-            />
-
-            <motion.div
-              variants={itemVariants}
-              className="mt-12 pt-8 border-t border-slate-200"
             >
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">
-                Tags
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {insight.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-600"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              {insight.body && <PortableText value={insight.body} />}
             </motion.div>
+
+            {/* Related Insights */}
+            {relatedInsights && relatedInsights.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="mt-16 pt-8 border-t border-slate-200"
+              >
+                <h3 className="text-2xl font-bold text-slate-800 mb-8">
+                  Related Insights
+                </h3>
+                <div className="grid md:grid-cols-3 gap-8">
+                  {relatedInsights.map((relatedInsight) => (
+                    <div
+                      key={relatedInsight._id}
+                      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+                    >
+                      <Link to={`/insights/${relatedInsight.slug.current}`}>
+                        <div className="relative aspect-video">
+                          <img
+                            src={relatedInsight.mainImage?.url}
+                            alt={relatedInsight.title}
+                            className="object-cover w-full h-full"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <h4 className="text-lg font-semibold text-slate-800 mb-2 line-clamp-2">
+                            {relatedInsight.title}
+                          </h4>
+                          <p className="text-sm text-slate-600 line-clamp-2">
+                            {relatedInsight.summary}
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </section>

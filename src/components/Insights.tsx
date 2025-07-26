@@ -1,11 +1,15 @@
 import { motion } from "framer-motion";
-import { insights } from "@/constants";
+// import { insights } from "@/constants";
 import Button from "./ui/Button";
 import Heading from "./Heading";
 import { ArrowRight } from "lucide-react";
+import { useInsights } from "@/hooks/useSanityData";
 
 const Insights = () => {
-  return (
+  const { data } = useInsights({
+    limit: 3,
+  });
+  return data?.insights && data?.insights.length > 0 ? (
     <section className="py-20 bg-warm">
       <div className="container mx-auto px-6">
         {/* Top Section */}
@@ -35,7 +39,7 @@ const Insights = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {insights.map((insight, index) => (
+          {data?.insights.map((insight, index) => (
             <motion.div
               key={index}
               className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
@@ -46,20 +50,20 @@ const Insights = () => {
             >
               <div className="aspect-video relative overflow-hidden">
                 <img
-                  src={insight.image}
+                  src={insight.mainImage?.url}
                   alt={insight.title}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
               </div>
               <div className="p-6">
                 <div className="text-sm text-slate-500 mb-2 font-normal">
-                  {insight.date} • By {insight.author}
+                  {insight.publishedAt as string} • By {insight.author?.name}
                 </div>
                 <h3 className="text-xl font-bold text-slate-800 mb-3 hover:text-teal-700 transition-colors">
                   <a href="#">{insight.title}</a>
                 </h3>
                 <p className="text-slate-600 mb-4 font-normal">
-                  {insight.excerpt}
+                  {insight.summary}
                 </p>
                 <Button
                   href="#"
@@ -85,6 +89,8 @@ const Insights = () => {
         </div>
       </div>
     </section>
+  ) : (
+    <></>
   );
 };
 

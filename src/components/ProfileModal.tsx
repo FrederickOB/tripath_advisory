@@ -1,18 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Linkedin, X } from "lucide-react";
 import Button from "@/components/ui/Button";
+import { Team } from "@/types/schema";
+import { PortableText } from "@portabletext/react";
+import { portableTextComponents } from "@/lib/portableTextComponents";
 
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  member: {
-    name: string;
-    role: string;
-    bio: string;
-    image: string;
-    fullProfile?: string;
-    linkedin_link?: string;
-  };
+  member: Team;
 }
 
 function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
@@ -59,7 +55,7 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
               {/* Image section */}
               <div className="relative  rounded-xl overflow-hidden">
                 <img
-                  src={member.image}
+                  src={member?.image?.url}
                   alt={member.name}
                   className="w-full h-full object-cover"
                 />
@@ -88,14 +84,16 @@ function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
                 </p>
                 <div className="prose prose-lg">
                   <p className="text-gray-600 mb-6 ">{member.bio}</p>
+
                   {member.fullProfile && (
                     <div className="mt-6 md:overflow-y-auto md:h-[60vh]">
                       <h3 className="text-xl font-semibold text-gray-900 mb-2">
                         Full Profile
                       </h3>
-                      <p className="text-gray-600 whitespace-pre-line">
-                        {member.fullProfile}
-                      </p>
+                      <PortableText
+                        value={member.fullProfile}
+                        components={portableTextComponents}
+                      />
                     </div>
                   )}
                 </div>

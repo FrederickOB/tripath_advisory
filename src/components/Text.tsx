@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
-import { AnimatedNumber, stats } from "./ImpactStats";
+import { AnimatedNumber } from "./ImpactStats";
 import { useState } from "react";
+
+import { useImpactStats } from "@/hooks/useSanityData";
 
 export default function Text() {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { data: stats } = useImpactStats();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -109,22 +112,24 @@ export default function Text() {
               viewport={{ once: true }}
               aria-label="Key statistics"
             >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className="text-center"
-                  variants={itemVariants}
-                >
-                  <AnimatedNumber
-                    value={stat.value}
-                    suffix={stat.suffix}
-                    prefix={stat.prefix}
-                  />
-                  <p className="mt-4 text-slate-600 font-medium">
-                    {stat.label}
-                  </p>
-                </motion.div>
-              ))}
+              {stats &&
+                stats.length > 0 &&
+                stats.map((stat, index) => (
+                  <motion.div
+                    key={index}
+                    className="text-center"
+                    variants={itemVariants}
+                  >
+                    <AnimatedNumber
+                      value={stat.value}
+                      suffix={stat.suffix}
+                      prefix={stat.prefix}
+                    />
+                    <p className="mt-4 text-slate-600 font-medium">
+                      {stat.statType}
+                    </p>
+                  </motion.div>
+                ))}
             </motion.div>
           </motion.div>
         </div>

@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
+import { useImpactStats } from "@/hooks/useSanityData";
+
 type TextSize = "base" | "lg" | "xl";
 
 const textSizeMap: Record<
@@ -30,19 +32,12 @@ const textSizeMap: Record<
   },
 };
 
-interface StatItem {
-  value: number;
-  label: string;
-  suffix?: string;
-  prefix?: string;
-}
-
-export const stats: StatItem[] = [
-  { value: 50, label: "Projects Completed", suffix: "+" },
-  { value: 1000, label: "Lives Touched", suffix: "+" },
-  { value: 20, label: "Clients Satisfied", suffix: "+" },
-  //   { value: 95, label: "Client Satisfaction", suffix: "%" },
-];
+// export const stats: StatItem[] = [
+//   { value: 50, label: "Projects Completed", suffix: "+" },
+//   { value: 1000, label: "Lives Touched", suffix: "+" },
+//   { value: 20, label: "Clients Satisfied", suffix: "+" },
+//   //   { value: 95, label: "Client Satisfaction", suffix: "%" },
+// ];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -138,6 +133,8 @@ export const AnimatedNumber = ({
 };
 
 export default function ImpactStats() {
+  const { data: stats } = useImpactStats();
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-warm via-white to-warm py-20">
       {/* Background Patterns */}
@@ -174,20 +171,24 @@ export default function ImpactStats() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              className="text-center"
-              variants={itemVariants}
-            >
-              <AnimatedNumber
-                value={stat.value}
-                suffix={stat.suffix}
-                prefix={stat.prefix}
-              />
-              <p className="mt-4 text-slate-600 font-medium">{stat.label}</p>
-            </motion.div>
-          ))}
+          {stats &&
+            stats.length > 0 &&
+            stats.map((stat, index) => (
+              <motion.div
+                key={index}
+                className="text-center"
+                variants={itemVariants}
+              >
+                <AnimatedNumber
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  prefix={stat.prefix}
+                />
+                <p className="mt-4 text-slate-600 font-medium">
+                  {stat.statType}
+                </p>
+              </motion.div>
+            ))}
         </motion.div>
       </div>
     </section>

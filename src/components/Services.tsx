@@ -1,9 +1,11 @@
 import { animations } from "@/lib/animation";
-import { services } from "../constants";
+// import { services } from "../constants";
 import { AnimatePresence, motion } from "framer-motion";
 import Heading from "./Heading";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
+import { Service } from "@/types/schema";
+import { useServices } from "@/hooks/useSanityData";
 
 const ProgressBar: React.FC<{ progress: number; duration: number }> = ({
   progress,
@@ -26,9 +28,13 @@ const Services = () => {
   const [progress, setProgress] = useState(0);
   const AUTO_ADVANCE_DURATION = 10000; // 10 seconds
 
+  const { data: services } = useServices();
+
+  console.log("Services fetched:", services);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % services.length);
+      setActiveIndex((prev) => (prev + 1) % (services?.length || 0));
       setProgress(0);
     }, AUTO_ADVANCE_DURATION);
 
@@ -43,7 +49,7 @@ const Services = () => {
       clearInterval(interval);
       clearInterval(progressInterval);
     };
-  }, []);
+  }, [services?.length]);
 
   const handleCardClick = (index: number) => {
     setActiveIndex(index);
@@ -74,8 +80,8 @@ const Services = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-500">
-              {services[activeIndex].title} ({activeIndex + 1} of{" "}
-              {services.length})
+              {services && services?.length > 0 && services[activeIndex]?.title}{" "}
+              ({activeIndex + 1} of {services?.length})
             </span>
             <span className="text-sm text-gray-500">Auto-advancing</span>
           </div>
@@ -84,30 +90,36 @@ const Services = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
-            {services.map((service, index) => (
-              <ServiceCard
-                key={service.title + index}
-                service={service}
-                index={index}
-                isActive={index === activeIndex}
-                onClick={() => handleCardClick(index)}
-              />
-            ))}
+            {services &&
+              services.map((service, index) => (
+                <ServiceCard
+                  key={service.title + index}
+                  service={service}
+                  index={index}
+                  isActive={index === activeIndex}
+                  onClick={() => handleCardClick(index)}
+                />
+              ))}
           </div>
-          <div className="overflow-hidden hidden md:block rounded-xl">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={services[activeIndex].title}
-                src={services[activeIndex]?.image || "src/assets/hero.png"}
-                alt={services[activeIndex].title}
-                className="w-full h-full object-cover aspect-video"
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.5 }}
-              />
-            </AnimatePresence>{" "}
-          </div>
+          {services && services?.length > 0 && (
+            <div className="overflow-hidden hidden md:block rounded-xl">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={services[activeIndex]?.title}
+                  src={
+                    (services[activeIndex]?.image?.url as string) ||
+                    "src/assets/hero.png"
+                  }
+                  alt={services[activeIndex]?.title}
+                  className="w-full h-full object-cover aspect-video"
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.5 }}
+                />
+              </AnimatePresence>{" "}
+            </div>
+          )}
         </div>
       </motion.div>
     </section>
@@ -116,7 +128,7 @@ const Services = () => {
 
 export default Services;
 const ServiceCard: React.FC<{
-  service: (typeof services)[number];
+  service: Service;
   index: number;
   isActive: boolean;
   onClick: () => void;
@@ -174,7 +186,7 @@ const ServiceCard: React.FC<{
         <AnimatePresence mode="wait">
           <motion.img
             key={service.title}
-            src={service.image}
+            src={service?.image.url || "src/assets/hero.png"}
             alt={service.title}
             className="w-full h-full object-cover aspect-video"
             initial={{ opacity: 0, scale: 1.1 }}

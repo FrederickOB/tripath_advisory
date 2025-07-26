@@ -11,9 +11,9 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Projects Completed', value: 'projects_completed'},
-          {title: 'Lives Touched', value: 'lives_touched'},
-          {title: 'Clients Satisfied', value: 'clients_satisfied'},
+          {title: 'Projects Completed', value: 'Projects Completed'},
+          {title: 'Lives Touched', value: 'Lives Touched'},
+          {title: 'Clients Satisfied', value: 'Clients Satisfied'},
         ],
         layout: 'radio',
       },
@@ -41,9 +41,9 @@ export default defineType({
     },
     prepare({title, subtitle}) {
       const labels: Record<string, string> = {
-        projects_completed: 'Projects Completed',
-        lives_touched: 'Lives Touched',
-        clients_satisfied: 'Clients Satisfied',
+        'Projects Completed': 'Projects Completed',
+        'Lives Touched': 'Lives Touched',
+        'Clients Satisfied': 'Clients Satisfied',
       }
       return {
         title: labels[title] || title,

@@ -1,14 +1,8 @@
 import { motion } from "framer-motion";
-import { services } from "@/constants";
 import {
-  BarChart4,
-  FileText,
-  LineChart,
   ArrowRight,
   CheckCircle2,
   ChevronRight,
-  Users,
-  Globe,
   Target,
   Lightbulb,
   Shield,
@@ -16,12 +10,7 @@ import {
 } from "lucide-react";
 import { animations } from "@/lib/animation";
 import Button from "@/components/ui/Button";
-
-const iconMap = {
-  BarChart4: BarChart4,
-  FileText: FileText,
-  LineChart: LineChart,
-};
+import { useServices } from "@/hooks/useSanityData";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -46,76 +35,9 @@ const itemVariants = {
   },
 };
 
-const serviceDetails = {
-  "ESG & Sustainable Finance Advisory:": {
-    benefits: [
-      "Enhanced brand reputation and stakeholder trust",
-      "Improved access to capital and better financing terms",
-      "Operational efficiency and cost reduction",
-      "Innovation and new market opportunities",
-    ],
-    approach: [
-      "Comprehensive ESG strategy development",
-      "Climate risk assessment and management",
-      "Sustainable finance product design",
-      "Stakeholder engagement and reporting",
-    ],
-    frameworks: [
-      "Global Reporting Initiative (GRI)",
-      "IFRS S1/S2",
-      "Ghana's Green Finance Taxonomy",
-      "Corporate Sustainability Reporting Directive (CSRD)",
-      "Bank of Ghana Sustainable Banking Principles",
-    ],
-    icon: <Globe className="w-6 h-6" />,
-  },
-  "Social Policy & Inclusive Development": {
-    benefits: [
-      "More effective and sustainable policy outcomes",
-      "Enhanced stakeholder engagement and buy-in",
-      "Improved service delivery and impact",
-      "Better resource allocation and efficiency",
-    ],
-    approach: [
-      "Evidence-based policy research",
-      "Stakeholder consultation and engagement",
-      "Implementation planning and support",
-      "Monitoring and evaluation frameworks",
-    ],
-    frameworks: [
-      "Social Protection Systems",
-      "Public Health Systems",
-      "Education Policy",
-      "Rural Development",
-      "Urban Planning",
-    ],
-    icon: <Users className="w-6 h-6" />,
-  },
-  "Gender, Youth & Community Empowerment": {
-    benefits: [
-      "More inclusive and sustainable development",
-      "Enhanced community ownership and participation",
-      "Better outcomes for marginalized groups",
-      "Long-term social impact and transformation",
-    ],
-    approach: [
-      "Gender mainstreaming and analysis",
-      "Youth development and empowerment",
-      "Community-led solutions",
-      "Capacity building and training",
-    ],
-    frameworks: [
-      "Gender Equality Framework",
-      "Youth Development Strategy",
-      "Community Engagement Models",
-      "Inclusive Development Principles",
-      "Participatory Planning Methods",
-    ],
-    icon: <Target className="w-6 h-6" />,
-  },
-};
-
 export default function ServicesPage() {
+  const { data: services, loading, error } = useServices();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-warm via-white to-warm">
       <section className="relative h-[40vh] bg-gradient-to-br from-primary to-primary/90 flex items-center justify-center">
@@ -160,144 +82,154 @@ export default function ServicesPage() {
               that drive meaningful change across the continent.
             </p>
           </motion.div>
-
-          <motion.div
-            className="grid  gap-24"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {services.map((service, index) => {
-              const Icon = iconMap[service.icon as keyof typeof iconMap];
-              const details =
-                serviceDetails[service.title as keyof typeof serviceDetails];
-
-              return (
-                <motion.div
-                  key={index}
-                  className="relative"
-                  variants={itemVariants}
-                >
-                  {/* Service Header */}
-                  <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-                    <div
-                      className={`order-2 ${
-                        index % 2 === 0 ? "md:order-1" : "md:order-2"
-                      }`}
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-20 text-red-500">
+              <p>Error loading services. Please try again later.</p>
+            </div>
+          ) : (
+            <motion.div
+              className="grid  gap-24"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {services &&
+                services?.length > 0 &&
+                services.map((service, index) => {
+                  return (
+                    <motion.div
+                      key={index}
+                      className="relative"
+                      variants={itemVariants}
                     >
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center">
-                          <Icon className="w-8 h-8 text-emerald-600" />
-                        </div>
-                        <h2 className="text-3xl font-bold underline text-slate-800">
-                          {service.title}
-                        </h2>
-                      </div>
-                      <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                        {service.description}
-                      </p>
-                      <Button
-                        href="#services"
-                        variant="primary"
-                        size="sm"
-                        icon={ArrowRight}
-                        className="bg-emerald-600 hover:bg-emerald-700"
-                      >
-                        Learn More
-                      </Button>
-                    </div>
-                    <div
-                      className={`order-1 ${
-                        index % 2 === 0 ? "md:order-2" : "md:order-1"
-                      }`}
-                    >
-                      <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl group">
-                        <img
-                          src={service.image}
-                          alt={service.title}
-                          className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Service Details */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {/* Benefits */}
-                    <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-                          <TrendingUp className="w-6 h-6 text-emerald-600" />
-                        </div>
-                        <h3 className="text-xl font-bold text-slate-800">
-                          Benefits
-                        </h3>
-                      </div>
-                      <ul className="space-y-4">
-                        {details.benefits.map((benefit, i) => (
-                          <li
-                            key={i}
-                            className="flex items-start gap-3 text-slate-600"
+                      {/* Service Header */}
+                      <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                        <div
+                          className={`order-2 ${
+                            index % 2 === 0 ? "md:order-1" : "md:order-2"
+                          }`}
+                        >
+                          <div className="flex items-center gap-4 mb-6">
+                            <h2 className="text-3xl font-bold underline text-slate-800">
+                              {service?.title}
+                            </h2>
+                          </div>
+                          <p className="text-lg text-slate-600 leading-relaxed mb-8">
+                            {service?.description}
+                          </p>
+                          <Button
+                            href="#services"
+                            variant="primary"
+                            size="sm"
+                            icon={ArrowRight}
+                            className="bg-emerald-600 hover:bg-emerald-700"
                           >
-                            <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" />
-                            <span>{benefit}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Approach */}
-                    <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-                          <Lightbulb className="w-6 h-6 text-emerald-600" />
+                            Learn More
+                          </Button>
                         </div>
-                        <h3 className="text-xl font-bold text-slate-800">
-                          Our Approach
-                        </h3>
-                      </div>
-                      <ul className="space-y-4">
-                        {details.approach.map((item, i) => (
-                          <li
-                            key={i}
-                            className="flex items-start gap-3 text-slate-600"
-                          >
-                            <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Frameworks */}
-                    <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-                          <Shield className="w-6 h-6 text-emerald-600" />
+                        <div
+                          className={`order-1 ${
+                            index % 2 === 0 ? "md:order-2" : "md:order-1"
+                          }`}
+                        >
+                          <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl group">
+                            <img
+                              src={service?.image?.url}
+                              alt={service?.title}
+                              className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          </div>
                         </div>
-                        <h3 className="text-xl font-bold text-slate-800">
-                          Frameworks
-                        </h3>
                       </div>
-                      <ul className="space-y-4">
-                        {details.frameworks.map((framework, i) => (
-                          <li
-                            key={i}
-                            className="flex items-start gap-3 text-slate-600"
-                          >
-                            <ChevronRight className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" />
-                            <span>{framework}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
+
+                      {/* Service Details */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {/* Benefits */}
+                        <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                          <div className="flex items-center gap-3 mb-6">
+                            <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                              <TrendingUp className="w-6 h-6 text-emerald-600" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-800">
+                              Benefits
+                            </h3>
+                          </div>
+                          <ul className="space-y-4">
+                            {service?.benefits &&
+                              service?.benefits?.length > 0 &&
+                              service.benefits?.map((benefit, i) => (
+                                <li
+                                  key={i}
+                                  className="flex items-start gap-3 text-slate-600"
+                                >
+                                  <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" />
+                                  <span>{benefit}</span>
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+
+                        {/* Approach */}
+                        <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                          <div className="flex items-center gap-3 mb-6">
+                            <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                              <Lightbulb className="w-6 h-6 text-emerald-600" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-800">
+                              Our Approach
+                            </h3>
+                          </div>
+                          <ul className="space-y-4">
+                            {service?.approach &&
+                              service?.approach.length > 0 &&
+                              service?.approach?.map((item, i) => (
+                                <li
+                                  key={i}
+                                  className="flex items-start gap-3 text-slate-600"
+                                >
+                                  <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+
+                        {/* Frameworks */}
+                        <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                          <div className="flex items-center gap-3 mb-6">
+                            <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                              <Shield className="w-6 h-6 text-emerald-600" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-800">
+                              Frameworks
+                            </h3>
+                          </div>
+                          <ul className="space-y-4">
+                            {service?.frameworks &&
+                              service?.frameworks.length > 0 &&
+                              service?.frameworks?.map((framework, i) => (
+                                <li
+                                  key={i}
+                                  className="flex items-start gap-3 text-slate-600"
+                                >
+                                  <ChevronRight className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" />
+                                  <span>{framework}</span>
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+            </motion.div>
+          )}
         </div>
       </section>
 
