@@ -19,6 +19,8 @@ function AboutUs() {
   const { data: statsData } = useImpactStats();
   const { data: TeamData } = useTeamMembers();
 
+  console.log(bioData);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

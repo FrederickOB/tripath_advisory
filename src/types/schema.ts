@@ -69,8 +69,8 @@ export interface ClientService {
   _id: string;
   _type: "client_service";
   title: string;
-  service: { _ref: string };
-  client: { _ref: string };
+  service: Service;
+  client: Client;
   description: string;
   metrics?: Array<{
     label: string;

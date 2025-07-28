@@ -10,7 +10,11 @@ import {
 } from "lucide-react";
 import { animations } from "@/lib/animation";
 import Button from "@/components/ui/Button";
-import { useServices } from "@/hooks/useSanityData";
+import {
+  useClients,
+  useClientServices,
+  useServices,
+} from "@/hooks/useSanityData";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,6 +41,9 @@ const itemVariants = {
 
 export default function ServicesPage() {
   const { data: services, loading, error } = useServices();
+  const { data: clients, loading: clientsLoading } = useClients();
+  const { data: clientServices, loading: clientServicesLoading } =
+    useClientServices();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-warm via-white to-warm">
@@ -234,133 +241,142 @@ export default function ServicesPage() {
       </section>
 
       {/* Client Showcase Section */}
-      <section className="py-20 bg-slate-50">
-        <div className="container mx-auto px-6">
-          <motion.div
-            className="max-w-4xl mx-auto text-center mb-16"
-            variants={animations.fadeIn}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-8">
-              Trusted by Leading Organizations
-            </h2>
-            <p className="text-xl text-slate-600 leading-relaxed">
-              We've partnered with organizations across Africa to drive
-              sustainable impact and create lasting change in their communities.
-            </p>
-          </motion.div>
-
-          {/* Client Logos */}
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {[
-              {
-                name: "Global Impact Corp",
-                logo: "/src/assets/clients/global-impact.png",
-              },
-              {
-                name: "AfriTech Solutions",
-                logo: "/src/assets/clients/afritech.png",
-              },
-              {
-                name: "West African Ventures",
-                logo: "/src/assets/clients/wav.png",
-              },
-              {
-                name: "Ghana Development Bank",
-                logo: "/src/assets/clients/gdb.png",
-              },
-            ].map((client, index) => (
-              <motion.div
-                key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
-                variants={itemVariants}
-                whileHover={{ y: -5 }}
-              >
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="max-h-16 w-auto grayscale hover:grayscale-0 transition-all duration-300"
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Client Success Stories */}
-          <motion.div
-            className="grid md:grid-cols-2 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {[
-              {
-                title: "ESG Transformation",
-                client: "Global Impact Corp",
-                description:
-                  "Helped implement comprehensive ESG strategies resulting in 40% reduction in carbon emissions and improved stakeholder engagement.",
-                metrics: [
-                  { label: "Carbon Reduction", value: "40%" },
-                  { label: "Stakeholder Satisfaction", value: "85%" },
-                ],
-              },
-              {
-                title: "Community Development",
-                client: "West African Ventures",
-                description:
-                  "Developed and implemented community engagement programs that benefited over 10,000 people across rural communities.",
-                metrics: [
-                  { label: "Communities Reached", value: "15+" },
-                  { label: "People Impacted", value: "10,000+" },
-                ],
-              },
-            ].map((story, index) => (
-              <motion.div
-                key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                variants={itemVariants}
-                whileHover={{ y: -5 }}
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-                    <Target className="w-6 h-6 text-emerald-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-800">
-                      {story.title}
-                    </h3>
-                    <p className="text-emerald-600 font-medium">
-                      {story.client}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-slate-600 mb-6">{story.description}</p>
-                <div className="grid grid-cols-2 gap-4">
-                  {story.metrics.map((metric, i) => (
-                    <div
-                      key={i}
-                      className="bg-slate-50 rounded-xl p-4 text-center"
-                    >
-                      <p className="text-2xl font-bold text-emerald-600 mb-1">
-                        {metric.value}
-                      </p>
-                      <p className="text-sm text-slate-600">{metric.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+      {clientsLoading ? (
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
-      </section>
+      ) : (
+        clients &&
+        clients.length > 0 && (
+          <section className="py-20 bg-slate-50">
+            <div className="container mx-auto px-6">
+              <motion.div
+                className="max-w-4xl mx-auto text-center mb-16"
+                variants={animations.fadeIn}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+              >
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mb-8">
+                  Trusted by Leading Organizations
+                </h2>
+                <p className="text-xl text-slate-600 leading-relaxed">
+                  We've partnered with organizations across Africa to drive
+                  sustainable impact and create lasting change in their
+                  communities.
+                </p>
+              </motion.div>
+
+              {/* Client Logos */}
+              <motion.div
+                className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {clients.map((client, index) => (
+                  <motion.div
+                    key={index}
+                    className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
+                    variants={itemVariants}
+                    whileHover={{ y: -5 }}
+                  >
+                    <img
+                      src={client.logo?.url}
+                      alt={client.name}
+                      className="max-h-16 w-auto grayscale hover:grayscale-0 transition-all duration-300"
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Client Success Stories */}
+              <motion.div
+                className="grid md:grid-cols-2 gap-8"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {
+                  // [
+                  //   {
+                  //     title: "ESG Transformation",
+                  //     client: "Global Impact Corp",
+                  //     description:
+                  //       "Helped implement comprehensive ESG strategies resulting in 40% reduction in carbon emissions and improved stakeholder engagement.",
+                  //     metrics: [
+                  //       { label: "Carbon Reduction", value: "40%" },
+                  //       { label: "Stakeholder Satisfaction", value: "85%" },
+                  //     ],
+                  //   },
+                  //   {
+                  //     title: "Community Development",
+                  //     client: "West African Ventures",
+                  //     description:
+                  //       "Developed and implemented community engagement programs that benefited over 10,000 people across rural communities.",
+                  //     metrics: [
+                  //       { label: "Communities Reached", value: "15+" },
+                  //       { label: "People Impacted", value: "10,000+" },
+                  //     ],
+                  //   },
+                  // ]
+                  clientServicesLoading ? (
+                    <div className="flex justify-center items-center py-20">
+                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                    </div>
+                  ) : (
+                    clientServices &&
+                    clientServices.length > 0 &&
+                    clientServices.map((service, index) => (
+                      <motion.div
+                        key={index}
+                        className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
+                        variants={itemVariants}
+                        whileHover={{ y: -5 }}
+                      >
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                            <Target className="w-6 h-6 text-emerald-600" />
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-bold text-slate-800">
+                              {service.title}
+                            </h3>
+                            <p className="text-emerald-600 font-medium">
+                              {service.client.name}
+                            </p>
+                          </div>
+                        </div>
+                        <p className="text-slate-600 mb-6">
+                          {service.description}
+                        </p>
+                        <div className="grid grid-cols-2 gap-4">
+                          {service?.metrics &&
+                            service?.metrics.map((metric, i) => (
+                              <div
+                                key={i}
+                                className="bg-slate-50 rounded-xl p-4 text-center"
+                              >
+                                <p className="text-2xl font-bold text-emerald-600 mb-1">
+                                  {metric.value}
+                                </p>
+                                <p className="text-sm text-slate-600">
+                                  {metric.label}
+                                </p>
+                              </div>
+                            ))}
+                        </div>
+                      </motion.div>
+                    ))
+                  )
+                }
+              </motion.div>
+            </div>
+          </section>
+        )
+      )}
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-teal-900 to-teal-800 relative overflow-hidden">

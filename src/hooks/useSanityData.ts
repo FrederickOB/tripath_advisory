@@ -37,6 +37,10 @@ export function useClients() {
   const cacheKey = "clients";
   return useAsync(() => sanityService.fetchClients(), cacheKey);
 }
+export function useClientServices() {
+  const cacheKey = "client_services";
+  return useAsync(() => sanityService.fetchClientServices(), cacheKey);
+}
 
 // Enhanced hook for insights with pagination, search, and filtering
 export function useInsights(params?: QueryParams) {
