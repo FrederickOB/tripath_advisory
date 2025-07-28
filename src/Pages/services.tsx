@@ -129,7 +129,7 @@ export default function ServicesPage() {
                           <p className="text-lg text-slate-600 leading-relaxed mb-8">
                             {service?.description}
                           </p>
-                          <Button
+                          {/* <Button
                             href="#services"
                             variant="primary"
                             size="sm"
@@ -137,7 +137,7 @@ export default function ServicesPage() {
                             className="bg-emerald-600 hover:bg-emerald-700"
                           >
                             Learn More
-                          </Button>
+                          </Button> */}
                         </div>
                         <div
                           className={`order-1 ${

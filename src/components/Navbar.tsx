@@ -104,6 +104,7 @@ const MobileNavigation = ({
           <Button
             variant="primary"
             className="mt-4 font-normal text-white text-sm"
+            href="/contact"
             onClick={onClose}
           >
             Book Appointment
@@ -170,6 +171,7 @@ export default function Navbar() {
               scrolled ? "" : "bg-white/20  hover:bg-white/30 backdrop-blur-sm",
               " font-normal text-sm text-white"
             )}
+            href="/contact"
           >
             Book Appointment
           </Button>

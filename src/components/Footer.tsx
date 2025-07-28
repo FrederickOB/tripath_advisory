@@ -1,4 +1,4 @@
-import { navLinks, services } from "../constants";
+import { navLinks } from "../constants";
 import {
   Linkedin,
   Twitter,
@@ -7,10 +7,11 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Logo } from "./Navbar";
+import { useServices } from "@/hooks/useSanityData";
 
 const Footer = () => {
   const year = new Date().getFullYear();
-
+  const { data: services } = useServices();
   return (
     <footer
       style={{ backgroundColor: "var(--color-dark)" }}
@@ -81,20 +82,22 @@ const Footer = () => {
           <div className="lg:col-span-3">
             <h3 className="text-lg font-bold mb-6 text-white">Services</h3>
             <ul className="space-y-4">
-              {services.map((service) => (
-                <li key={service.title}>
-                  <a
-                    href="#services"
-                    className="text-warm/70 hover:text-secondary transition-colors duration-300 flex items-center group"
-                  >
-                    <ArrowRight
-                      size={14}
-                      className="mr-2 hidden group-hover:block transition-opacity"
-                    />
-                    {service.title.replace(":", "")}
-                  </a>
-                </li>
-              ))}
+              {services &&
+                services.length > 0 &&
+                services.map((service) => (
+                  <li key={service.title}>
+                    <a
+                      href="#services"
+                      className="text-warm/70 hover:text-secondary transition-colors duration-300 flex items-center group"
+                    >
+                      <ArrowRight
+                        size={14}
+                        className="mr-2 hidden group-hover:block transition-opacity"
+                      />
+                      {service.title.replace(":", "")}
+                    </a>
+                  </li>
+                ))}
             </ul>
           </div>
           <div className="lg:col-span-3 space-y-8">
