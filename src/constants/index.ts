@@ -6,29 +6,97 @@ export const navLinks = [
   { label: "Contact", path: "/contact" },
 ];
 
-export const caseStudies = [
+
+export const siteUrl = "https://tripathadvisory.org";
+
+export const contactDetails = {
+  email: "info@tripathadvisory.org",
+  phone: "+233 54 286 4729",
+  // International format without "+" or spaces, for wa.me links
+  whatsapp: "233542864729",
+  address: ["24 Nii Kodia Rd, West Adenta", "Accra, Ghana"],
+};
+
+export const focusAreas = [
+  "ESG strategy",
+  "Policy reform",
+  "Gender equity",
+  "Youth empowerment",
+  "Sustainable finance",
+  "Regulatory compliance",
+  "Stakeholder engagement",
+];
+
+export const processSteps = [
   {
-    title: "Sustainable Supply Chain Transformation",
+    title: "Diagnose",
     description:
-      "Helped a multinational corporation redesign their supply chain management practices, resulting in 40% reduced carbon footprint and improved worker conditions across 12 countries.",
-    category: "Environmental",
-    image:
-      "https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "Research and data analysis establish where you stand and what the evidence says.",
   },
   {
-    title: "Inclusive Healthcare Accessibility",
+    title: "Co-design",
     description:
-      "Partnered with healthcare providers to implement inclusive access policies, expanding quality care to underserved communities and increasing service reach by 65%.",
-    category: "Social",
-    image:
-      "https://images.pexels.com/photos/6647037/pexels-photo-6647037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "Solutions built with the stakeholders and communities who will carry them.",
   },
   {
-    title: "Governance Framework Modernization",
+    title: "Implement",
     description:
-      "Guided a public institution through governance reforms, implementing transparency practices that improved stakeholder trust and operational efficiency.",
-    category: "Governance",
-    image:
-      "https://images.pexels.com/photos/5673488/pexels-photo-5673488.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "Frameworks, programmes and policies taken from paper into practice.",
+  },
+  {
+    title: "Measure",
+    description:
+      "Outcomes tracked against agreed indicators, so impact can be shown, not claimed.",
+  },
+];
+
+// Optional brochure download for the Services page; the button shows once a URL is set
+export const brochureUrl = "";
+
+export const aboutPurpose = [
+  {
+    label: "Our mission",
+    text: "To help organisations align strategy with sustainability, inclusion and impact.",
+  },
+  {
+    label: "How we work",
+    text: "We co-create ESG solutions, policy reforms and inclusive development models that work.",
+  },
+  {
+    label: "Where we work",
+    text: "Based in Ghana, working across Africa and beyond.",
+  },
+];
+
+export const pillars = [
+  {
+    title: "Policy",
+    description:
+      "Policy reform and ESG regulatory frameworks that institutions can implement.",
+  },
+  {
+    title: "People",
+    description:
+      "Social policy, gender equity and youth empowerment that elevate under-represented voices.",
+  },
+  {
+    title: "Planet",
+    description:
+      "ESG strategy, sustainable finance and environmental stewardship tied to long-term performance.",
+  },
+];
+
+export const audiences = [
+  {
+    title: "Governments & regulators",
+    description: "Policy reform, regulatory frameworks and stakeholder validation.",
+  },
+  {
+    title: "Development partners",
+    description: "Inclusive programme design, delivery support and impact measurement.",
+  },
+  {
+    title: "Businesses",
+    description: "ESG strategy, compliance and sustainable finance tied to performance.",
   },
 ];

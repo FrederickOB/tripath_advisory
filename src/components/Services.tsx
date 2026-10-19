@@ -1,201 +1,173 @@
-import { animations } from "@/lib/animation";
-// import { services } from "../constants";
-import { AnimatePresence, motion } from "framer-motion";
-import Heading from "./Heading";
-import { useEffect, useState } from "react";
-import clsx from "clsx";
-import { Service } from "@/types/schema";
+import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Link } from "react-router";
 import { useServices } from "@/hooks/useSanityData";
+import { sanityImage } from "@/lib/image";
+import { pillarOf } from "@/lib/pillar";
+import { useReveal } from "@/lib/reveal";
+import SectionTitle, { Accent } from "./ui/SectionTitle";
 
-const ProgressBar: React.FC<{ progress: number; duration: number }> = ({
-  progress,
-  // duration,
-}) => {
-  return (
-    <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-      <motion.div
-        className="h-full bg-primary"
-        initial={{ width: "0%" }}
-        animate={{ width: `${progress}%` }}
-        transition={{ duration: 0.1, ease: "linear" }}
-      />
-    </div>
-  );
-};
+const ADVANCE_MS = 7000;
+const NUMBER_WORDS = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"];
 
 const Services = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const AUTO_ADVANCE_DURATION = 10000; // 10 seconds
-
   const { data: services } = useServices();
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const reduceMotion = useReducedMotion();
+  const reveal = useReveal();
 
-  console.log("Services fetched:", services);
+  const count = services?.length ?? 0;
+  const autoAdvance = count > 1 && !paused && !reduceMotion;
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % (services?.length || 0));
-      setProgress(0);
-    }, AUTO_ADVANCE_DURATION);
+    if (!autoAdvance) return;
+    const id = window.setTimeout(() => setActive((i) => (i + 1) % count), ADVANCE_MS);
+    return () => window.clearTimeout(id);
+  }, [active, autoAdvance, count]);
 
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) return 0;
-        return prev + 100 / (AUTO_ADVANCE_DURATION / 50);
-      });
-    }, 50);
+  // Warm the cache so switching tabs never shows an empty image panel
+  useEffect(() => {
+    services?.forEach((service) => {
+      const src = sanityImage(service.image?.url, 1100);
+      if (src) new Image().src = src;
+    });
+  }, [services]);
 
-    return () => {
-      clearInterval(interval);
-      clearInterval(progressInterval);
-    };
-  }, [services?.length]);
+  if (!services || count === 0) return null;
 
-  const handleCardClick = (index: number) => {
-    setActiveIndex(index);
-    setProgress(0);
+  const index = active % count;
+  const current = services[index];
+  const word = NUMBER_WORDS[count - 1] ?? String(count);
+
+  const select = (i: number, focus = false) => {
+    setActive(i);
+    setPaused(true);
+    if (focus) tabRefs.current[i]?.focus();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      e.preventDefault();
+      select((index + 1) % count, true);
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      e.preventDefault();
+      select((index - 1 + count) % count, true);
+    }
   };
 
   return (
-    <section id="services" className="py-24 relative">
-      {/* Background with subtle pattern */}
-      <div className="absolute inset-0 bg-white opacity-80 z-0"></div>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMxMGI5ODEiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djZoNnYtNmgtNnptNiA2djZoNnYtNmgtNnptLTEyIDBoNnY2aC02di02em0xMiAwaDZ2NmgtNnYtNnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-50 z-0"></div>
-
-      <motion.div
-        className="container mx-auto px-6 relative z-10"
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={animations.fadeIn}
-      >
-        <Heading
-          label="OUR SERVICES"
-          title="Tailored Solutions"
-          subtitle="For Your Business Needs"
-          description="Our expert team delivers customized strategies that address your unique challenges and drive sustainable growth."
-          className="my-8"
+    <section id="services" className="tp tp-section scroll-mt-20">
+      <div className="tp-container flex flex-col gap-12">
+        <SectionTitle
+          eyebrow="Our services"
+          title={
+            <>
+              One firm. {word} {count === 1 ? "path" : "paths"}{" "}
+              <Accent>to lasting impact.</Accent>
+            </>
+          }
+          aside={
+            count > 1
+              ? `Choose a path to see what we deliver. Most clients draw on all ${word.toLowerCase()}.`
+              : undefined
+          }
         />
 
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-500">
-              {services && services?.length > 0 && services[activeIndex]?.title}{" "}
-              ({activeIndex + 1} of {services?.length})
-            </span>
-            <span className="text-sm text-gray-500">Auto-advancing</span>
+        <motion.div
+          {...reveal(0.1)}
+          className="flex flex-col gap-3 rounded-[30px] bg-warm p-3"
+        >
+          <div
+            role="tablist"
+            aria-label="Service paths"
+            onKeyDown={handleKeyDown}
+            className="grid gap-2 [grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr))]"
+          >
+            {services.map((service, i) => {
+              const selected = i === index;
+              const pillar = pillarOf(service.title);
+              return (
+                <button
+                  key={service._id}
+                  ref={(el) => {
+                    tabRefs.current[i] = el;
+                  }}
+                  type="button"
+                  role="tab"
+                  id={`service-tab-${i}`}
+                  aria-selected={selected}
+                  aria-controls="service-panel"
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => select(i)}
+                  className="tp-tab"
+                >
+                  <span className="tp-tab-kicker">
+                    {String(i + 1).padStart(2, "0")} · {pillar ?? "Path"}
+                  </span>
+                  <span className="tp-tab-title">{service.title}</span>
+                  {selected && autoAdvance && (
+                    <span className="tp-tab-progress" aria-hidden="true">
+                      <span key={index} />
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
-          <ProgressBar progress={progress} duration={AUTO_ADVANCE_DURATION} />
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            {services &&
-              services.map((service, index) => (
-                <ServiceCard
-                  key={service.title + index}
-                  service={service}
-                  index={index}
-                  isActive={index === activeIndex}
-                  onClick={() => handleCardClick(index)}
-                />
-              ))}
-          </div>
-          {services && services?.length > 0 && (
-            <div className="overflow-hidden hidden md:block rounded-xl">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={services[activeIndex]?.title}
-                  src={
-                    (services[activeIndex]?.image?.url as string) ||
-                    "src/assets/hero.png"
-                  }
-                  alt={services[activeIndex]?.title}
-                  className="w-full h-full object-cover aspect-video"
-                  initial={{ opacity: 0, scale: 1.1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.5 }}
-                />
-              </AnimatePresence>{" "}
+          <div
+            key={current._id}
+            id="service-panel"
+            role="tabpanel"
+            aria-labelledby={`service-tab-${index}`}
+            className="tp-panel grid items-center gap-10 rounded-[22px] bg-white p-[clamp(24px,4vw,52px)] md:gap-14 [grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr))]"
+          >
+            <div className="flex flex-col gap-6">
+              <h3 className="tp-serif text-[clamp(28px,2.6vw,38px)] leading-[1.15]">
+                {current.title}
+              </h3>
+              <p className="tp-lead">{current.description}</p>
+              {current.approach && current.approach.length > 0 && (
+                <ul className="tp-numbered">
+                  {current.approach.map((item, i) => (
+                    <li key={item}>
+                      <span className="tp-black text-primary" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="flex flex-wrap gap-x-8 gap-y-3">
+                <Link className="tp-link" to="#contact">
+                  Discuss an engagement{" "}
+                  <span className="tp-arr" aria-hidden="true">
+                    →
+                  </span>
+                </Link>
+                <Link className="tp-link tp-link--muted" to="/services">
+                  Full service details
+                </Link>
+              </div>
             </div>
-          )}
-        </div>
-      </motion.div>
+
+            <div className="tp-clip-x relative h-[300px] overflow-hidden rounded-[20px] bg-forest md:h-[400px]">
+              {current.image?.url && (
+                <img
+                  src={sanityImage(current.image.url, 1100)}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              )}
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 };
 
 export default Services;
-const ServiceCard: React.FC<{
-  service: Service;
-  index: number;
-  isActive: boolean;
-  onClick: () => void;
-}> = ({ service, index, isActive, onClick }) => {
-  const formattedNumber = (index + 1).toString().padStart(2, "0");
-
-  return (
-    <motion.div
-      className="relative cursor-pointer group"
-      onClick={onClick}
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-    >
-      <div
-        className={clsx(
-          "flex items-start md:gap-8 gap-4  md:py-8 md:px-6 rounded-2xl   bg-white hover:bg-gray-50 transition-all duration-300 group-hover:shadow-lg",
-          isActive ? "border-primary" : ""
-        )}
-      >
-        {/* Number */}
-        <div className="flex-shrink-0">
-          <span className="text-lg md:text-2xl font-light text-gray-400 group-hover:text-gray-600 transition-colors">
-            {formattedNumber}
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 ">
-          <h3
-            className={clsx(
-              "text-lg md:text-2xl font-semibold  mb-3 group-hover:text-primary transition-colors",
-              isActive ? "text-primary underline" : "text-gray-900 "
-            )}
-          >
-            {service.title}
-          </h3>
-          <p
-            className={clsx(
-              isActive
-                ? "text-gray-600 leading-relaxed text-sm md:text-base"
-                : "hidden"
-            )}
-          >
-            {service.description}
-          </p>
-        </div>
-      </div>
-      <div
-        className={clsx(
-          isActive ? "md:hidden block" : "hidden",
-          " overflow-hidden rounded-xl mt-4"
-        )}
-      >
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={service.title}
-            src={service?.image.url || "src/assets/hero.png"}
-            alt={service.title}
-            className="w-full h-full object-cover aspect-video"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.5 }}
-          />
-        </AnimatePresence>{" "}
-      </div>
-    </motion.div>
-  );
-};

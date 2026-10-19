@@ -1,213 +1,197 @@
 import { motion } from "framer-motion";
-import Heading from "./Heading";
-import { animations } from "@/lib/animation";
-import { useState } from "react";
-import Button from "./ui/Button";
-import { ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useReveal } from "@/lib/reveal";
+import SectionTitle, { Accent } from "./ui/SectionTitle";
+
+const Icon = ({
+  size,
+  color,
+  strokeWidth,
+  children,
+}: {
+  size: number;
+  color: string;
+  strokeWidth: number;
+  children: React.ReactNode;
+}) => (
+  <svg
+    className="tp-icon relative"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {children}
+  </svg>
+);
+
+const features = [
+  {
+    title: "Industry expertise",
+    description:
+      "Specialists across environmental policy, social governance and sustainable finance bring deep sector knowledge to every project.",
+    variant: "feature",
+    icon: (
+      <>
+        <path d="M12 3l8 4v6c0 4-3.5 7-8 8-4.5-1-8-4-8-8V7z" />
+        <path d="M8.5 12l2.5 2.5 4.5-5" />
+      </>
+    ),
+  },
+  {
+    title: "Data-driven approach",
+    description:
+      "Evidence-based strategies, backed by research and analysis, that deliver measurable results.",
+    icon: (
+      <>
+        <path d="M4 20V10" />
+        <path d="M10 20V4" />
+        <path d="M16 20v-7" />
+        <path d="M22 20H2" />
+      </>
+    ),
+  },
+  {
+    title: "Stakeholder engagement",
+    description:
+      "Diverse voices at the table, so solutions address the needs of every affected community.",
+    icon: (
+      <>
+        <circle cx="9" cy="8" r="3.2" />
+        <circle cx="17" cy="9" r="2.4" />
+        <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+        <path d="M15 14.5c3 0 6 1.8 6 5.5" />
+      </>
+    ),
+  },
+  {
+    title: "Regulatory compliance",
+    description:
+      "Stay ahead of evolving ESG regulation with frameworks built for what's coming next.",
+    icon: (
+      <>
+        <rect x="5" y="3" width="14" height="18" rx="2" />
+        <path d="M9 8h6" />
+        <path d="M9 12h6" />
+        <path d="M9 16h3" />
+      </>
+    ),
+  },
+  {
+    title: "Sustainable growth",
+    description:
+      "Business objectives aligned with environmental stewardship and social responsibility.",
+    icon: (
+      <>
+        <path d="M3 17l6-6 4 4 8-8" />
+        <path d="M15 7h6v6" />
+      </>
+    ),
+  },
+  {
+    title: "Social policy, equity & inclusion",
+    description:
+      "Global inclusion standards turned into programmes that boost gender equity, empower youth and elevate under-represented voices across Ghana and Africa.",
+    variant: "wide",
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v10" />
+        <path d="M7 12h10" />
+      </>
+    ),
+  },
+];
 
 function WhyChooseUs() {
-  const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>(
-    {}
-  );
-
-  const features = [
-    {
-      title: "Industry Expertise",
-      description:
-        "With specialists across environmental policy, social governance, and sustainable finance, we bring deep sector knowledge to every project.",
-      imageSrc: "/assets/whychooseus/industry_expertise.png",
-      imagePosition: "background",
-    },
-    {
-      title: "Data-Driven Approach",
-      description:
-        "Our recommendations are backed by comprehensive research and analysis, ensuring evidence-based strategies that deliver measurable results.",
-      className:
-        "md:col-span-1 lg:col-span-2 bg-gradient-to-br from-white to-emerald-50",
-      imageSrc: "/assets/whychooseus/data_driven.png",
-    },
-    {
-      title: "Stakeholder Engagement",
-      description:
-        "We excel at bringing diverse voices to the table, ensuring inclusive solutions that address the needs of all affected communities.",
-      imageSrc: "/assets/whychooseus/stakeholder_engagement.png",
-    },
-    {
-      title: "Regulatory Compliance",
-      description:
-        "Stay ahead of evolving ESG regulations with our comprehensive compliance frameworks and future-proofed sustainability strategies.",
-      imageSrc: "/assets/whychooseus/regulatory.png",
-    },
-    {
-      title: "Sustainable Growth",
-      description:
-        "We help organizations achieve long-term prosperity by aligning business objectives with environmental stewardship and social responsibility.",
-      imageSrc: "/assets/whychooseus/sustainable_growth.png",
-    },
-    {
-      title: "Social Policy, Equity & Inclusion",
-      description:
-        "We turn global inclusion standards into actionable programmes that boost gender equity, empower youth and elevate under‑represented voices across Ghana and Africa.",
-
-      imageSrc: "/assets/whychooseus/social_policy.png",
-    },
-  ];
-
-  const handleImageLoad = (title: string) => {
-    setLoadedImages((prev) => ({ ...prev, [title]: true }));
-  };
+  const reveal = useReveal();
 
   return (
     <section
-      style={{ backgroundColor: "var(--color-warm)" }}
-      className="py-24 relative overflow-hidden"
+      id="approach"
+      className="tp tp-section scroll-mt-20 bg-warm"
       aria-label="Why choose TriPath Advisory"
     >
-      {/* Enhanced Background Patterns */}
-      <div className="absolute inset-0">
-        {/* Main gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-warm/90 via-warm/60 to-transparent" />
-
-        {/* Geometric pattern overlay */}
-        <div className="absolute inset-0 opacity-20">
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(45deg, transparent 25%, color-mix(in srgb, var(--color-primary) 10%, transparent) 25%, color-mix(in srgb, var(--color-primary) 10%, transparent) 50%, transparent 50%, transparent 75%, color-mix(in srgb, var(--color-primary) 10%, transparent) 75%)`,
-              backgroundSize: "20px 20px",
-            }}
-          />
-        </div>
-
-        {/* Dots pattern */}
-        <div className="absolute inset-0 opacity-15">
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `radial-gradient(circle at center, color-mix(in srgb, var(--color-secondary) 20%, transparent) 1px, transparent 1px)`,
-              backgroundSize: "20px 20px",
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Enhanced Decorative Elements */}
-      <div
-        className="absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"
-        style={{
-          backgroundColor:
-            "color-mix(in srgb, var(--color-secondary) 30%, transparent)",
-        }}
-      />
-      <div
-        className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"
-        style={{
-          backgroundColor:
-            "color-mix(in srgb, var(--color-primary) 30%, transparent)",
-        }}
-      />
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-3xl"
-        style={{
-          backgroundColor:
-            "color-mix(in srgb, var(--color-dark) 20%, transparent)",
-        }}
-      />
-
-      {/* Floating shapes */}
-      <div
-        className="absolute top-20 left-20 w-24 h-24 rounded-lg rotate-12 blur-sm"
-        style={{
-          backgroundColor:
-            "color-mix(in srgb, var(--color-secondary) 20%, transparent)",
-        }}
-      />
-      <div
-        className="absolute bottom-20 right-20 w-32 h-32 rounded-full blur-sm"
-        style={{
-          backgroundColor:
-            "color-mix(in srgb, var(--color-primary) 20%, transparent)",
-        }}
-      />
-      <div
-        className="absolute top-1/3 right-1/4 w-20 h-20 rounded-lg -rotate-12 blur-sm"
-        style={{
-          backgroundColor:
-            "color-mix(in srgb, var(--color-dark) 20%, transparent)",
-        }}
-      />
-
-      <motion.div
-        className="container mx-auto px-6 relative"
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={animations.fadeIn}
-      >
-        {/* Section Header */}
-        <Heading
-          label="Why Choose Us"
-          title="Our Approach"
-          subtitle="Makes the Difference"
-          description="We combine deep industry expertise with innovative methodologies to deliver sustainable solutions that create lasting impact."
-          className="my-8"
+      <div className="tp-container flex flex-col gap-[52px]">
+        <SectionTitle
+          eyebrow="Why choose us"
+          title={
+            <>
+              Our approach <Accent>makes the difference.</Accent>
+            </>
+          }
         />
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-8"
-          variants={animations.stagger}
-        >
-          {features.map((feature) => (
-            <motion.div
-              key={feature.title}
-              className="overflow-hidden rounded-2xl shadow-md  hover:shadow-xl transition-all duration-300"
-              variants={animations.card}
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="bg-white p-6">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
-                  {!loadedImages[feature.title] && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-300 animate-pulse" />
-                  )}
-                  <img
-                    src={feature.imageSrc}
-                    alt={`${feature.title} illustration`}
-                    className={`w-full h-full object-cover transition-opacity duration-300 ${
-                      loadedImages[feature.title] ? "opacity-100" : "opacity-0"
-                    }`}
-                    loading="lazy"
-                    onLoad={() => handleImageLoad(feature.title)}
-                  />
-                </div>
-              </div>
+        <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr))]">
+          {features.map((feature, i) => {
+            if (feature.variant === "feature") {
+              return (
+                <motion.article
+                  key={feature.title}
+                  {...reveal(0)}
+                  className="tp-bento row-span-2 flex min-h-[420px] flex-col justify-between gap-6 rounded-[28px] bg-primary p-10 text-warm"
+                >
+                  <span className="tp-glow" aria-hidden="true" />
+                  <Icon size={52} color="#A7E3C9" strokeWidth={1.5}>
+                    {feature.icon}
+                  </Icon>
+                  <div className="relative flex flex-col gap-4">
+                    <h3 className="tp-serif text-[40px] leading-[1.08]">{feature.title}</h3>
+                    <p className="text-[17px] leading-[1.65] text-warm/90">
+                      {feature.description}
+                    </p>
+                  </div>
+                </motion.article>
+              );
+            }
 
-              <div className="pb-6 px-6 bg-white">
-                <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-3">
-                  {feature.title}
-                </h2>
-                <p className="text-gray-600 text-sm md:text-base line-clamp-4">
+            if (feature.variant === "wide") {
+              return (
+                <motion.article
+                  key={feature.title}
+                  {...reveal(0)}
+                  className="tp-bento col-span-full rounded-[28px] bg-dark p-8 text-warm"
+                >
+                  <span className="tp-glow" aria-hidden="true" />
+                  <div className="relative flex flex-wrap items-center justify-between gap-8">
+                    <div className="flex items-center gap-5">
+                      <Icon size={44} color="#A7E3C9" strokeWidth={1.6}>
+                        {feature.icon}
+                      </Icon>
+                      <h3 className="tp-serif text-[30px] leading-tight">{feature.title}</h3>
+                    </div>
+                    <p className="max-w-[560px] text-base leading-[1.6] text-warm/85">
+                      {feature.description}
+                    </p>
+                  </div>
+                </motion.article>
+              );
+            }
+
+            return (
+              <motion.article
+                key={feature.title}
+                {...reveal(i % 2 === 0 ? 0.16 : 0.08)}
+                className={cn("tp-bento flex flex-col gap-3.5 rounded-[28px] bg-white p-8")}
+              >
+                <span className="tp-glow" aria-hidden="true" />
+                <Icon size={38} color="#0E5C4B" strokeWidth={1.7}>
+                  {feature.icon}
+                </Icon>
+                <h3 className="tp-sans tp-black relative text-[22px]">{feature.title}</h3>
+                <p className="relative text-base leading-[1.6] text-muted">
                   {feature.description}
                 </p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* CTA Button */}
-
-        <motion.div className="mt-16 text-center" variants={animations.fadeIn}>
-          <Button
-            href="/contact"
-            variant="primary"
-            size="md"
-            icon={ArrowRight}
-            className="shadow-lg text-white"
-          >
-            Learn More About Our Approach
-          </Button>
-        </motion.div>
-      </motion.div>
+              </motion.article>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }

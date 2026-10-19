@@ -32,7 +32,7 @@ const SanityLink = ({
   value,
   children,
 }: {
-  value: any;
+  value?: any;
   children: React.ReactNode;
 }) => {
   const target = (value?.href || "").startsWith("http") ? "_blank" : undefined;

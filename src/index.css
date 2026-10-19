@@ -10,6 +10,14 @@
   --color-secondary: #5b8673;
   --color-dark: #263238;
   --color-warm: #f8f6f1;
+
+  /* Option B design palette */
+  --color-mint: #a7e3c9;
+  --color-deep: #0b2a24;
+  --color-muted: #3b4a51;
+  --color-forest: #2e5e4f;
+  --color-sand: #c9b98f;
+  --color-sage-50: #d9e7e0;
 }
 
 /* Base Typography */
@@ -100,5 +108,891 @@ a {
   }
   100% {
     background-position: 0% center;
+  }
+}
+
+/* ================================================================== */
+/* Design system — "Option B refined"                                 */
+/*                                                                    */
+/* Classes are prefixed `tp-` and opt in per section, so the hero and */
+/* the global element rules above stay exactly as they were. Section  */
+/* roots carry `.tp` to set the body font for their own subtree.      */
+/* ================================================================== */
+
+@layer components {
+  .tp {
+    font-family: var(--font-lato);
+    color: var(--color-dark);
+  }
+
+  .tp-container {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+
+  .tp-section {
+    padding-block: 80px;
+  }
+
+  @media (min-width: 768px) {
+    .tp-container {
+      padding-inline: 32px;
+    }
+    .tp-section {
+      padding-block: 112px;
+    }
+  }
+
+  .tp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .tp-eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 2px;
+    background: currentColor;
+  }
+
+  .tp-h1 {
+    font-size: clamp(48px, 7.4vw, 108px);
+    line-height: 0.96;
+    letter-spacing: -0.05em;
+  }
+  .tp-h2 {
+    font-size: clamp(38px, 4.6vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+  }
+  .tp-accent {
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+  }
+  .tp-lead {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  /* Background grid used behind page headers */
+  .tp-grid-bg {
+    background-image:
+      linear-gradient(rgba(38, 50, 56, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(38, 50, 56, 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 70% at 30% 40%, #000 30%, transparent 75%);
+  }
+
+  .tp-draw {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: tpDraw 3s cubic-bezier(0.6, 0.1, 0.2, 1) 0.2s forwards;
+  }
+  .tp-draw--2 {
+    animation-delay: 0.5s;
+  }
+  .tp-draw--3 {
+    animation-delay: 0.8s;
+  }
+
+  /* Endless marquee: the track holds the list twice and slides by half */
+  .tp-marquee {
+    display: flex;
+    width: max-content;
+    animation: tpMarq var(--tp-marquee-duration, 32s) linear infinite;
+  }
+  .tp-marquee--pausable:hover {
+    animation-play-state: paused;
+  }
+  .tp-fade-x {
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  /* Bento cards */
+  .tp-bento {
+    position: relative;
+    overflow: hidden;
+    transition:
+      translate 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 0.45s;
+  }
+  .tp-bento:hover {
+    translate: 0 -6px;
+    box-shadow: 0 30px 60px -30px rgba(38, 50, 56, 0.4);
+  }
+  .tp-bento .tp-icon :is(path, circle, rect) {
+    stroke-dasharray: 80;
+    stroke-dashoffset: 0;
+  }
+  .tp-bento:hover .tp-icon :is(path, circle, rect) {
+    animation: tpIcon 1s cubic-bezier(0.6, 0.1, 0.2, 1);
+  }
+  .tp-glow {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    right: -90px;
+    top: -90px;
+    background: radial-gradient(circle, rgba(167, 227, 201, 0.55), transparent 70%);
+    opacity: 0;
+    transform: scale(0.6);
+    pointer-events: none;
+    transition:
+      opacity 0.5s,
+      transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tp-bento:hover .tp-glow {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Process steps */
+  .tp-step {
+    transition: translate 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tp-step:hover {
+    translate: 0 -6px;
+  }
+  .tp-node {
+    transition:
+      scale 0.4s cubic-bezier(0.3, 1.4, 0.4, 1),
+      background-color 0.3s,
+      color 0.3s;
+  }
+  .tp-step:hover .tp-node {
+    scale: 1.18;
+    background-color: var(--color-mint);
+    color: var(--color-deep);
+  }
+
+  /* Service tab panel */
+  .tp-panel {
+    animation: tpPanel 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tp-panel .tp-clip-x {
+    clip-path: inset(0 100% 0 0 round 20px);
+    animation: tpClipX 1s cubic-bezier(0.7, 0, 0.2, 1) 0.1s forwards;
+  }
+  .tp-panel .tp-numbered > li {
+    opacity: 0;
+    animation: tpUp 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+  .tp-panel .tp-numbered > li:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+  .tp-panel .tp-numbered > li:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  .tp-panel .tp-numbered > li:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  .tp-panel .tp-numbered > li:nth-child(n + 4) {
+    animation-delay: 0.5s;
+  }
+
+  .tp-numbered {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid rgba(38, 50, 56, 0.1);
+    font-size: 17px;
+  }
+  .tp-numbered > li {
+    display: flex;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(38, 50, 56, 0.1);
+  }
+
+  /* Scroll progress under the nav */
+  .tp-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 3px;
+    background: var(--color-primary);
+    transform-origin: left;
+  }
+
+  .tp-photo-label {
+    font-size: 12px;
+    color: var(--color-warm);
+    background: rgba(38, 50, 56, 0.78);
+    padding: 8px 12px;
+    border-radius: 10px;
+  }
+}
+
+/*
+ * The global `h1–h6`, `p, span, a, button, li` and `button, a` rules above
+ * sit outside any cascade layer, so they beat every Tailwind utility. The
+ * rules below are unlayered too — their class selectors outrank those
+ * element selectors — and cover font family/weight and interactive states.
+ */
+.tp-sans,
+.tp-eyebrow,
+.tp-h1,
+.tp-h2 {
+  font-family: var(--font-lato);
+}
+.tp-black,
+.tp-eyebrow,
+.tp-h1,
+.tp-h2 {
+  font-weight: 900;
+}
+.tp-bold {
+  font-weight: 700;
+}
+.tp-regular {
+  font-weight: 400;
+}
+.tp-serif,
+.tp-accent {
+  font-family: var(--font-playfair);
+  font-weight: 500;
+}
+.tp-accent,
+.tp-italic {
+  font-style: italic;
+}
+
+.tp-kicker {
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.tp-tag {
+  display: inline-block;
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-deep);
+  background: var(--color-mint);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.tp-wordmark {
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  color: var(--color-dark);
+  transition: color 0.3s;
+}
+.tp-wordmark > span {
+  font-weight: 400;
+  color: var(--color-primary);
+  transition: color 0.3s;
+}
+.tp-wordmark--light {
+  color: #fff;
+}
+.tp-wordmark--light > span {
+  color: var(--color-mint);
+}
+
+/* Buttons */
+.tp-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 15px;
+  transition:
+    translate 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.3s,
+    color 0.3s;
+}
+.tp-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translateY(101%);
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.tp-btn:hover {
+  translate: 0 -3px;
+}
+.tp-btn:hover::before {
+  transform: none;
+}
+.tp-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+.tp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  translate: none;
+}
+.tp-btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 14px 30px -14px rgba(14, 92, 75, 0.85);
+}
+.tp-btn--primary::before {
+  background: var(--color-dark);
+}
+.tp-btn--soft {
+  background: var(--color-warm);
+  color: var(--color-dark);
+}
+.tp-btn--soft::before {
+  background: var(--color-primary);
+}
+.tp-btn--soft:hover {
+  color: #fff;
+}
+.tp-btn--mint {
+  background: var(--color-mint);
+  color: var(--color-deep);
+}
+.tp-btn--mint::before {
+  background: var(--color-warm);
+}
+.tp-btn--sm {
+  min-height: 46px;
+  padding: 0 22px;
+}
+
+.tp-arr {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+.tp-btn:hover .tp-arr,
+.tp-link:hover .tp-arr {
+  transform: translateX(6px);
+}
+
+.tp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-lato);
+  font-weight: 900;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.tp-link:hover {
+  color: var(--color-dark);
+}
+.tp-link--muted {
+  color: var(--color-muted);
+}
+.tp-link--light {
+  color: var(--color-mint);
+}
+.tp-link--light:hover {
+  color: #fff;
+}
+
+/* Navigation */
+.tp-nav-link {
+  position: relative;
+  padding: 8px 0;
+  font-family: var(--font-lato);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-dark);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.tp-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tp-nav-link:hover::after,
+.tp-nav-link.is-active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.tp-nav-link--light {
+  color: #fff;
+}
+.tp-nav-link--light::after {
+  background: var(--color-mint);
+}
+
+/* Cards (insights, team) */
+.tp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: var(--color-dark);
+  text-decoration: none;
+  transition:
+    translate 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.45s;
+}
+.tp-card:hover {
+  translate: 0 -8px;
+}
+.tp-card-img img {
+  transition: transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tp-card:hover .tp-card-img img {
+  transform: scale(1.08);
+}
+.tp-card-title {
+  background: linear-gradient(var(--color-primary), var(--color-primary)) no-repeat 0 100% / 0 2px;
+  transition: background-size 0.5s;
+}
+.tp-card:hover .tp-card-title {
+  background-size: 100% 2px;
+}
+
+/* Service tabs */
+.tp-tab {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 24px 26px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--color-dark);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.35s,
+    color 0.35s,
+    box-shadow 0.35s;
+}
+.tp-tab:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+.tp-tab[aria-selected="true"] {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 16px 34px -18px rgba(14, 92, 75, 0.95);
+}
+.tp-tab:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+.tp-tab-kicker {
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.tp-tab-title {
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 1.2;
+}
+.tp-tab-progress {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 12px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+}
+.tp-tab-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--color-mint);
+  transform-origin: left;
+  animation: tpFill var(--tp-tab-duration, 7s) linear forwards;
+}
+
+/* Forms */
+.tp-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-lato);
+  font-weight: 700;
+  font-size: 14px;
+}
+.tp-input {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 16px;
+  font: inherit;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--color-dark);
+  background: #fff;
+  border: 1.5px solid rgba(38, 50, 56, 0.18);
+  border-radius: 12px;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s,
+    translate 0.25s;
+}
+.tp-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 5px rgba(14, 92, 75, 0.12);
+  translate: 0 -1px;
+}
+.tp-input--light {
+  border-color: transparent;
+}
+.tp-input--light:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 5px rgba(167, 227, 201, 0.45);
+}
+.tp-chip {
+  padding: 10px 16px;
+  font-family: var(--font-lato);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-dark);
+  background: #fff;
+  border: 1.5px solid rgba(38, 50, 56, 0.2);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    border-color 0.25s;
+}
+.tp-chip:hover {
+  border-color: var(--color-primary);
+}
+.tp-chip[aria-pressed="true"] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.tp-chip:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Light-outline button for dark bands */
+.tp-btn--outline-light {
+  background: transparent;
+  color: var(--color-warm);
+  box-shadow: inset 0 0 0 1.5px rgba(248, 246, 241, 0.5);
+}
+.tp-btn--outline-light::before {
+  background: var(--color-warm);
+}
+.tp-btn--outline-light:hover {
+  color: var(--color-primary);
+}
+
+/* Inner-page pieces: breadcrumb, filters, sub-nav, rows and cards */
+.tp-crumb a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.tp-crumb a:hover {
+  text-decoration: underline;
+}
+.tp-crumb--light a {
+  color: var(--color-mint);
+}
+
+.tp-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 15px;
+  color: var(--color-dark);
+  background: var(--color-warm);
+  cursor: pointer;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    translate 0.25s;
+}
+.tp-filter:hover {
+  translate: 0 -2px;
+}
+.tp-filter[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: #fff;
+}
+.tp-filter:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+.tp-filter > span {
+  font-weight: 900;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.tp-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--color-dark);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.25s,
+    color 0.25s;
+}
+.tp-sub::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tp-sub:hover,
+.tp-sub.is-active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.tp-del {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  font-family: var(--font-lato);
+  font-weight: 700;
+  font-size: 17px;
+  transition:
+    background-color 0.3s,
+    translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tp-del:hover {
+  background: #fff;
+  translate: 8px 0;
+}
+
+.tp-info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--color-warm);
+  color: var(--color-dark);
+  text-decoration: none;
+  transition:
+    translate 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    background-color 0.3s;
+}
+.tp-info:hover {
+  translate: 8px 0;
+  background: #fff;
+}
+
+.tp-prow {
+  transition: background-color 0.3s;
+}
+.tp-prow:hover {
+  background: var(--color-warm);
+}
+.tp-prow .tp-pnode {
+  transition: scale 0.4s cubic-bezier(0.3, 1.4, 0.4, 1);
+}
+.tp-prow:hover .tp-pnode {
+  scale: 1.15;
+}
+
+.tp-member img {
+  transition: scale 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tp-member:hover img {
+  scale: 1.06;
+}
+.tp-member .tp-ov {
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition:
+    opacity 0.4s,
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tp-member:hover .tp-ov,
+.tp-member:focus-within .tp-ov {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.tp-seg {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--color-dark);
+  font-family: var(--font-lato);
+  font-weight: 900;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    box-shadow 0.3s;
+}
+.tp-seg[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 10px 24px -14px rgba(14, 92, 75, 0.9);
+}
+.tp-seg:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.tp-float {
+  animation: tpFloat 7s ease-in-out infinite;
+}
+.tp-check {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: tpDraw 0.6s cubic-bezier(0.6, 0.1, 0.2, 1) 0.25s forwards;
+}
+
+@keyframes tpFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes tpUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes tpClipX {
+  to {
+    clip-path: inset(0 0 0 0 round 20px);
+  }
+}
+@keyframes tpDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes tpMarq {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes tpFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes tpPanel {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes tpIcon {
+  from {
+    stroke-dashoffset: 80;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-marquee,
+  .tp-draw,
+  .tp-panel,
+  .tp-panel .tp-numbered > li,
+  .tp-panel .tp-clip-x,
+  .tp-tab-progress > span,
+  .tp-bento:hover .tp-icon :is(path, circle, rect),
+  .tp-float,
+  .tp-check {
+    animation: none !important;
+  }
+  .tp-check {
+    stroke-dashoffset: 0;
+  }
+  .tp-draw {
+    stroke-dashoffset: 0;
+  }
+  .tp-panel .tp-numbered > li {
+    opacity: 1;
+  }
+  .tp-panel .tp-clip-x {
+    clip-path: none;
   }
 }

@@ -19,7 +19,7 @@ export const fetchImpactStats = async (): Promise<ImpactStat[]> => {
     *[_type == "impactStat" && value > 0] {
       _id,
       value,
-      label,
+      statType,
       suffix,
       prefix
     }
@@ -114,7 +114,10 @@ export const fetchClientServices = async (): Promise<ClientService[]> => {
       title,
       "service": service->{
         title,
-        description
+        description,
+        "image": image.asset->{
+          url
+        }
       },
       "client": client->{
         name,

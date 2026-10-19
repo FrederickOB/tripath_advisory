@@ -1,4 +1,4 @@
-import { navLinks } from "../constants";
+import { contactDetails, navLinks } from "../constants";
 import {
   Linkedin,
   Twitter,
@@ -87,7 +87,7 @@ const Footer = () => {
                 services.map((service) => (
                   <li key={service.title}>
                     <a
-                      href="#services"
+                      href="/services"
                       className="text-warm/70 hover:text-secondary transition-colors duration-300 flex items-center group"
                     >
                       <ArrowRight
@@ -118,9 +118,9 @@ const Footer = () => {
                     "color-mix(in srgb, var(--color-warm) 70%, transparent)",
                 }}
               >
-                123 Impact Avenue, Suite 400
+                {contactDetails.address[0]}
                 <br />
-                San Francisco, CA 94105
+                {contactDetails.address[1]}
               </address>
             </div>
             <div>
@@ -139,9 +139,9 @@ const Footer = () => {
                     "color-mix(in srgb, var(--color-warm) 70%, transparent)",
                 }}
               >
-                contact@tripathadvisory.com
+                {contactDetails.email}
                 <br />
-                +1 (555) 123-4567
+                {contactDetails.phone}
               </p>
             </div>
           </div>
@@ -165,11 +165,15 @@ const Footer = () => {
           </p>
           <div className="mt-4 md:mt-0">
             <ul className="flex space-x-6">
-              {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(
-                (item) => (
+              {[
+                { label: "Privacy Policy", href: "/privacy" },
+                { label: "Terms of Service", href: "/terms" },
+                { label: "Cookie Policy", href: "/privacy#cookies" },
+              ].map(
+                ({ label: item, href }) => (
                   <li key={item}>
                     <a
-                      href="#"
+                      href={href}
                       style={{
                         color:
                           "color-mix(in srgb, var(--color-warm) 70%, transparent)",

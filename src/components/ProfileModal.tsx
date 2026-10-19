@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Linkedin, X } from "lucide-react";
-import Button from "@/components/ui/Button";
 import { Team } from "@/types/schema";
 import { PortableText } from "@portabletext/react";
 import { portableTextComponents } from "@/lib/portableTextComponents";
+import { sanityImage } from "@/lib/image";
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -12,96 +13,91 @@ interface ProfileModalProps {
 }
 
 function ProfileModal({ isOpen, onClose, member }: ProfileModalProps) {
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isOpen, onClose]);
 
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 overflow-y-auto"
-        onClick={onClose}
-      >
-        <div className="min-h-screen px-4 text-center">
-          {/* Background overlay */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={onClose}
-          />
+      {isOpen && member && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="tp fixed inset-0 z-[60] overflow-y-auto"
+          onClick={onClose}
+        >
+          <div className="fixed inset-0 bg-deep/60 backdrop-blur-sm" aria-hidden="true" />
 
-          {/* Modal panel */}
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            className="inline-block w-full h-full md:max-h-[90vh] max-w-6xl p-6 my-8 text-left align-middle  transition-all transform bg-white shadow-xl rounded-2xl relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close button */}
-            <Button
-              onClick={onClose}
-              variant="ghost"
-              size="sm"
-              className="absolute top-2 right-2 z-50 hover:bg-gray-100"
-              icon={X}
-              aria-label="Close"
-            />
+          <div className="relative flex min-h-full items-center justify-center p-4 md:p-8">
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label={member.name}
+              initial={{ y: 24, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 24, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
+              className="relative grid w-full max-w-6xl gap-8 overflow-hidden rounded-[28px] bg-white p-5 shadow-[0_40px_80px_-40px_rgba(0,0,0,.5)] md:grid-cols-2 md:p-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-warm text-dark hover:bg-primary hover:text-white"
+              >
+                <X className="size-5" />
+              </button>
 
-            <div className="grid md:grid-cols-2 gap-8 ">
-              {/* Image section */}
-              <div className="relative  rounded-xl overflow-hidden">
-                <img
-                  src={member?.image?.url}
-                  alt={member.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative min-h-[320px] overflow-hidden rounded-[20px] bg-sage-50">
+                {member.image?.url && (
+                  <img
+                    src={sanityImage(member.image.url, 1000)}
+                    alt={member.name}
+                    className="absolute inset-0 h-full w-full object-cover object-top"
+                  />
+                )}
               </div>
 
-              {/* Content section */}
-              <div className="flex flex-col md:h-[80vh] ">
-                <div className="flex items-center  mb-1 gap-4">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                    {member.name}
-                  </h2>
+              <div className="flex flex-col md:max-h-[80vh]">
+                <span className="tp-eyebrow mb-4">{member.role}</span>
+                <div className="mb-6 flex items-center gap-4 pr-12">
+                  <h2 className="tp-h2 text-[clamp(30px,3vw,44px)]">{member.name}</h2>
                   {member.linkedin_link && (
                     <a
                       href={member.linkedin_link}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`LinkedIn profile of ${member.name}`}
-                      className="inline-flex bg-blue-600 rounded p-1 items-center text-white hover:bg-blue-800 transition-colors"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-warm text-primary hover:bg-primary hover:text-white"
                     >
                       <Linkedin className="size-4" />
                     </a>
                   )}
                 </div>
-                <p className="text-xl text-teal-600 font-medium mb-6">
-                  {member.role}
-                </p>
-                <div className="prose prose-lg">
-                  <p className="text-gray-600 mb-6 ">{member.bio}</p>
-
-                  {member.fullProfile && (
-                    <div className="mt-6 md:overflow-y-auto md:h-[60vh]">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                        Full Profile
-                      </h3>
-                      <PortableText
-                        value={member.fullProfile}
-                        components={portableTextComponents}
-                      />
-                    </div>
-                  )}
-                </div>
+                {member.bio && (
+                  <p className="tp-lead mb-6 text-lg">{member.bio}</p>
+                )}
+                {member.fullProfile && (
+                  <div className="border-t border-dark/10 pt-6 md:overflow-y-auto">
+                    <h3 className="tp-kicker mb-4">Full profile</h3>
+                    <PortableText
+                      value={member.fullProfile}
+                      components={portableTextComponents}
+                    />
+                  </div>
+                )}
               </div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
+            </motion.div>
+          </div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }

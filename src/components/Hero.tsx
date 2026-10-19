@@ -1,78 +1,59 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { animations } from "@/lib/animation";
-import { useState, useRef } from "react";
+import { lazy, Suspense, useState } from "react";
 import Button from "./ui/Button";
+import WarpText from "./WarpText.jsx";
+import "./WarpText.css";
+
+// three.js is loaded on demand so the headline renders immediately
+const HeroCanvas = lazy(() => import("./hero/HeroCanvas"));
 
 const Hero = () => {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleVideoLoad = () => {
-    setVideoLoaded(true);
-  };
-
-  const handleVideoError = () => {
-    console.error("Error loading video");
-    setVideoLoaded(true); // Set to true to show fallback
-  };
+  const [sceneReady, setSceneReady] = useState(false);
 
   return (
     <section
       id="home"
-      className="relative pt-20 min-h-screen lg:h-screen flex items-end overflow-hidden"
+      className="relative pt-20 min-h-screen lg:h-screen flex items-center overflow-hidden bg-[#03110d]"
       aria-label="Hero section"
     >
-      {/* Background with parallax effect */}
-      {/* <div className="absolute inset-0 z-0"> */}
-      {/* Animated gradient overlay */}
-      {/* <motion.div
-          className="absolute inset-0 z-20"
-          // style={{
-          //   background: `linear-gradient(to bottom right, color-mix(in srgb, var(--color-primary) 95%, black), color-mix(in srgb, var(--color-primary) 90%, black), color-mix(in srgb, var(--color-primary) 95%, black))`,
-          // }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
-          aria-hidden="true"
-        /> */}
+      {/* CSS fallback shown until (or instead of) the WebGL scene */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 45% at 72% 48%, rgba(31,143,115,0.35), transparent 70%), linear-gradient(to bottom, #020a08, #0c3a2f 52%, #03110d)",
+        }}
+        aria-hidden="true"
+      />
 
-      {/* Animated geometric shapes */}
-      {/*  */}
-
-      {/* Parallax background image */}
-      <motion.div
-        className="absolute inset-0 z-10"
-        // style={{ y: scrollY * 0.2 }}
+      {/* Three paths — Policy, People, Planet — converging on one horizon */}
+      <div
+        className={`absolute inset-0 z-10 transition-opacity duration-[1500ms] ease-out ${
+          sceneReady ? "opacity-100" : "opacity-0"
+        }`}
       >
-        <div
-          className={`w-full h-full transition-opacity duration-500 ${
-            videoLoaded ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <video
-            ref={videoRef}
-            src="/assets/hero.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-screen object-cover object-top"
-            onLoadedData={handleVideoLoad}
-            onError={handleVideoError}
-          />
-        </div>
-        {!videoLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-300 animate-pulse" />
-        )}
-      </motion.div>
-      {/* </div> */}
+        <Suspense fallback={null}>
+          <HeroCanvas onReady={() => setSceneReady(true)} />
+        </Suspense>
+      </div>
+
+      {/* Legibility scrims behind the copy */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-[#020a08]/90 via-[#020a08]/35 to-transparent lg:bg-gradient-to-r lg:from-[#020a08]/80 lg:via-[#020a08]/30 lg:to-transparent"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 h-40 z-10 pointer-events-none bg-gradient-to-t from-[#020a08]/70 to-transparent"
+        aria-hidden="true"
+      />
 
       {/* Content */}
       <div className="container mx-auto px-6 z-20 py-20 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
-            className="text-white max-w-2xl"
+            className="text-white text-center lg:col-span-2"
             initial="initial"
             animate="animate"
             variants={animations.stagger}
@@ -84,7 +65,8 @@ const Hero = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <motion.span
-                className="inline-block text-[0.55rem] px-2 md:px-4 py-1 border rounded-full bg-white/20 md:text-sm font-medium"
+                className="text-sm"
+                // className="inline-block text-[0.55rem] px-2 md:px-4 py-1 border border-white/25 rounded-full bg-white/10 backdrop-blur-sm md:text-sm font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1 }}
@@ -97,13 +79,34 @@ const Hero = () => {
               className="text-4xl sm:text-5xl lg:text-8xl font-bold mb-6 tracking-tight"
               variants={animations.fadeIn}
             >
-              <motion.h1
+              <WarpText
+                text="Policy. People. Planet."
+                warpStrength={0.08}
+                warpScale={1.7}
+                speed={0.55}
+                lens="bulge"
+                pointerInfluence={0.42}
+                pointerStrength={0.38}
+                refraction={0.018}
+                chromatic={0.35}
+                idleDrift={0.2}
+                ripple
+                clickRipple
+                intro
+                fontSize="calc(clamp(6rem, 13vw, 16rem) + 3rem)"
+                // fontWeight={900}
+                // style={{ height: "250px" }}
+                fontFamily="inherit"
+                letterSpacing="-0.06em"
+                lineHeight={0.9}
+              />
+              {/* <motion.h1
                 className="inline-block"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.4 }}
               >
-                Policy.
+                
               </motion.h1>{" "}
               <motion.h1
                 className="inline-block"
@@ -111,7 +114,7 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.6 }}
               >
-                People.
+                
               </motion.h1>{" "}
               <motion.h1
                 className="inline-block"
@@ -120,21 +123,22 @@ const Hero = () => {
                 transition={{ duration: 0.7, delay: 0.8 }}
               >
                 Planet.
-              </motion.h1>
+              </motion.h1> */}
             </motion.div>
 
             <motion.p
-              className=" md:text-2xl mb-8 text-gray-100 leading-relaxed font-normal"
+              className="max-w-2xl mx-auto md:text-xl mb-8 text-gray-100 leading-relaxed font-normal"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1 }}
             >
-              Empowering inclusive, data-driven, and sustainable transformation
-              across Africa and beyond.
+              We help governments, development partners and businesses across
+              Africa turn ESG commitments, policy reform and inclusion goals
+              into results that can be measured.
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row justify-center items-center gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1.2 }}
@@ -145,10 +149,6 @@ const Hero = () => {
                 size="lg"
                 icon={ArrowRight}
                 className="shadow-lg"
-                // style={{
-                //   boxShadow:
-                //     "0 10px 30px color-mix(in srgb, var(--color-primary) 30%, transparent)",
-                // }}
               >
                 Explore Our Services
               </Button>

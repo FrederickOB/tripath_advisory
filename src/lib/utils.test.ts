@@ -7,7 +7,8 @@ describe('cn', () => {
   })
 
   it('ignores falsy values', () => {
-    expect(cn('foo', false && 'bar', undefined, 'baz')).toBe('foo baz')
+    const active = Boolean(0)
+    expect(cn('foo', active && 'bar', undefined, 'baz')).toBe('foo baz')
   })
 
   it('handles conditional classes', () => {

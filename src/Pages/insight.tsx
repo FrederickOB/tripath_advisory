@@ -1,169 +1,136 @@
 import { useParams, Link } from "react-router";
 import { motion } from "framer-motion";
-import { useInsightBySlug } from "@/hooks/useSanityData";
-import { ArrowLeft, Calendar, User } from "lucide-react";
 import { PortableText } from "@portabletext/react";
+import InsightCard from "@/components/InsightCard";
+import SectionTitle, { Accent } from "@/components/ui/SectionTitle";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { useInsightBySlug } from "@/hooks/useSanityData";
+import { formatDate, readingTime } from "@/lib/format";
+import { sanityImage } from "@/lib/image";
+import { portableTextComponents } from "@/lib/portableTextComponents";
+import { useReveal } from "@/lib/reveal";
+
+const BackLink = ({ className = "self-start" }: { className?: string }) => (
+  <Link to="/insights" className={`tp-link group ${className}`}>
+    <span className="tp-arr transition-transform group-hover:-translate-x-1.5" aria-hidden="true">
+      ←
+    </span>
+    Back to insights
+  </Link>
+);
 
 export default function InsightPage() {
   const { slug } = useParams();
   const { data, loading, error } = useInsightBySlug(slug || "");
+  const reveal = useReveal();
+  const article = data?.insight;
+  usePageMeta({
+    title: article?.title ?? (loading ? "Insights" : "Insight not found"),
+    description: article?.summary,
+    image: article?.mainImage?.url ? sanityImage(article.mainImage.url, 1200) : undefined,
+    path: `/insights/${slug ?? ""}`,
+    type: article ? "article" : "website",
+    noindex: !loading && !article,
+  });
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+      <div className="tp flex min-h-screen items-center justify-center" role="status" aria-label="Loading">
+        <div className="h-12 w-12 animate-spin rounded-full border-2 border-primary/20 border-t-primary" />
       </div>
     );
   }
 
-  if (error || !data) {
+  if (error || !data?.insight) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-slate-800 mb-4">
-            Insight Not Found
-          </h1>
-          <p className="text-slate-600 mb-8">
+      <div className="tp flex min-h-screen items-center justify-center px-5 pt-24">
+        <div className="flex max-w-md flex-col items-center gap-5 text-center">
+          <h1 className="tp-h2">Insight not found</h1>
+          <p className="tp-lead">
             The insight you're looking for doesn't exist or has been removed.
           </p>
-          <Link
-            to="/insights"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Insights
-          </Link>
+          <BackLink className="self-center" />
         </div>
       </div>
     );
   }
 
   const { insight, relatedInsights } = data;
+  const minutes = readingTime(insight.body);
+  const meta = [
+    insight.author?.name && `By ${insight.author.name}`,
+    formatDate(insight.publishedAt),
+    minutes && `${minutes} min read`,
+  ].filter(Boolean);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-20">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-50/50 via-transparent to-transparent" />
-        <div className="container mx-auto px-6 relative">
-          <motion.div
-            className="max-w-4xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Link
-              to="/insights"
-              className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 mb-8"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Insights
-            </Link>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                {insight.categories?.map((category) => (
-                  <span
-                    key={category._id}
-                    className="px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-700"
-                  >
+    <div className="relative min-h-screen antialiased text-dark">
+      <section className="tp relative overflow-hidden pb-12 pt-32 md:pt-40">
+        <div aria-hidden="true" className="tp-grid-bg absolute inset-0" />
+        <div className="tp-container relative">
+          <motion.div {...reveal(0, 24)} className="mx-auto flex max-w-[960px] flex-col gap-7">
+            <BackLink />
+            {insight.categories && insight.categories.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {insight.categories.map((category) => (
+                  <span key={category._id ?? category.title} className="tp-tag">
                     {category.title}
                   </span>
                 ))}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">
-                {insight.title}
-              </h1>
-              <div className="flex flex-wrap items-center gap-6 text-slate-600 mb-8">
-                <div className="flex items-center gap-2">
-                  <User className="w-5 h-5" />
-                  <span>{insight.author?.name}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5" />
-                  <span>
-                    {new Date(
-                      insight.publishedAt as string
-                    ).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-              <div className="relative aspect-video rounded-2xl overflow-hidden mb-12">
-                <img
-                  src={insight.mainImage?.url}
-                  alt={insight.title}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Content Section */}
-      <section className="py-12">
-        <div className="container mx-auto px-6">
-          <motion.div
-            className="max-w-4xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="prose prose-lg prose-emerald max-w-none"
-            >
-              {insight.body && <PortableText value={insight.body} />}
-            </motion.div>
-
-            {/* Related Insights */}
-            {relatedInsights && relatedInsights.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-16 pt-8 border-t border-slate-200"
-              >
-                <h3 className="text-2xl font-bold text-slate-800 mb-8">
-                  Related Insights
-                </h3>
-                <div className="grid md:grid-cols-3 gap-8">
-                  {relatedInsights.map((relatedInsight) => (
-                    <div
-                      key={relatedInsight._id}
-                      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-                    >
-                      <Link to={`/insights/${relatedInsight.slug.current}`}>
-                        <div className="relative aspect-video">
-                          <img
-                            src={relatedInsight.mainImage?.url}
-                            alt={relatedInsight.title}
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-                        <div className="p-4">
-                          <h4 className="text-lg font-semibold text-slate-800 mb-2 line-clamp-2">
-                            {relatedInsight.title}
-                          </h4>
-                          <p className="text-sm text-slate-600 line-clamp-2">
-                            {relatedInsight.summary}
-                          </p>
-                        </div>
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+            )}
+            <h1 className="tp-serif text-[clamp(38px,5vw,68px)] leading-[1.08] tracking-[-0.02em]">
+              {insight.title}
+            </h1>
+            {insight.summary && <p className="tp-lead text-xl">{insight.summary}</p>}
+            {meta.length > 0 && (
+              <p className="text-[15px] text-muted">{meta.join(" · ")}</p>
             )}
           </motion.div>
+          {insight.mainImage?.url && (
+            <motion.div
+              {...reveal(0.1)}
+              className="mx-auto mt-12 aspect-video max-w-[1160px] overflow-hidden rounded-[28px] bg-forest"
+            >
+              <img
+                src={sanityImage(insight.mainImage.url, 1800)}
+                alt={insight.title}
+                className="h-full w-full object-cover"
+              />
+            </motion.div>
+          )}
         </div>
       </section>
+
+      <section className="tp pb-20 md:pb-28">
+        <div className="tp-container">
+          <article className="mx-auto max-w-[760px] text-lg">
+            {insight.body && (
+              <PortableText value={insight.body} components={portableTextComponents} />
+            )}
+          </article>
+        </div>
+      </section>
+
+      {relatedInsights && relatedInsights.length > 0 && (
+        <section className="tp tp-section bg-warm">
+          <div className="tp-container flex flex-col gap-11">
+            <SectionTitle
+              eyebrow="Keep reading"
+              title={
+                <>
+                  Related <Accent>insights</Accent>
+                </>
+              }
+            />
+            <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr))]">
+              {relatedInsights.map((related, i) => (
+                <InsightCard key={related._id} insight={related} delay={(i % 3) * 0.08} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

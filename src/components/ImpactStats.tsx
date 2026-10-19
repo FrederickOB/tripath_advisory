@@ -1,195 +1,161 @@
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
+import {
+  animate,
+  motion,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
+import { useEffect, useRef } from "react";
 
 import { useImpactStats } from "@/hooks/useSanityData";
+import { useReveal } from "@/lib/reveal";
+import type { ImpactStat } from "@/types/schema";
+import SectionTitle, { Accent } from "./ui/SectionTitle";
 
-type TextSize = "base" | "lg" | "xl";
+const RING = 2 * Math.PI * 45;
+const EASE: [number, number, number, number] = [0.2, 0.7, 0.2, 1];
 
-const textSizeMap: Record<
-  TextSize,
-  {
-    prefix: string;
-    count: string;
-    suffix: string;
-  }
-> = {
-  base: {
-    prefix: "text-lg md:text-xl",
-    count: "text-xl md:text-2xl",
-    suffix: "text-base md:text-lg",
-  },
-  lg: {
-    prefix: "text-2xl md:text-3xl",
-    count: "text-2xl md:text-3xl lg:text-4xl",
-    suffix: "text-xl md:text-2xl",
-  },
-  xl: {
-    prefix: "text-3xl md:text-4xl",
-    count: "text-4xl md:text-5xl lg:text-6xl",
-    suffix: "text-2xl md:text-3xl",
-  },
-};
-
-// export const stats: StatItem[] = [
-//   { value: 50, label: "Projects Completed", suffix: "+" },
-//   { value: 1000, label: "Lives Touched", suffix: "+" },
-//   { value: 20, label: "Clients Satisfied", suffix: "+" },
-//   //   { value: 95, label: "Client Satisfaction", suffix: "%" },
-// ];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
-export const AnimatedNumber = ({
-  value,
-  suffix,
-  prefix,
-  className,
-  textSize = "base",
-}: {
-  value: number;
-  suffix?: string;
-  prefix?: string;
-  className?: string;
-  textSize?: TextSize;
-}) => {
-  const [count, setCount] = useState(0);
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+const CountUp = ({ value }: { value: number }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (inView) {
-      const duration = 2000; // 2 seconds
-      const steps = 60; // 60 steps for smooth animation
-      const increment = value / steps;
-      let current = 0;
-      let step = 0;
-
-      const timer = setInterval(() => {
-        step++;
-        current = Math.min(Math.round(increment * step), value);
-        setCount(current);
-
-        if (step >= steps) {
-          clearInterval(timer);
-        }
-      }, duration / steps);
-
-      return () => clearInterval(timer);
+    const node = ref.current;
+    if (!inView || !node) return;
+    if (reduceMotion) {
+      node.textContent = value.toLocaleString();
+      return;
     }
-  }, [inView, value]);
+    const controls = animate(0, value, {
+      duration: 2.4,
+      ease: EASE,
+      onUpdate: (v) => {
+        node.textContent = Math.round(v).toLocaleString();
+      },
+    });
+    return () => controls.stop();
+  }, [inView, value, reduceMotion]);
 
+  // Own weight class: the global `span` rule would reset it to 400
+  return (
+    <span ref={ref} className="tp-black">
+      0
+    </span>
+  );
+};
+
+const StatCard = ({
+  stat,
+  fill,
+  delay,
+}: {
+  stat: ImpactStat;
+  fill: number;
+  delay: number;
+}) => {
+  const reveal = useReveal();
+  const reduceMotion = useReducedMotion();
   return (
     <motion.div
-      ref={ref}
-      className={cn(className, "flex items-baseline justify-center")}
-      variants={itemVariants}
+      {...reveal(delay)}
+      className="flex items-center gap-[22px] rounded-3xl border border-warm/[.12] bg-warm/[.05] p-7"
     >
-      {prefix && (
-        <span
-          className={`${textSizeMap[textSize].prefix} text-emerald-600 font-light`}
-        >
-          {prefix}
-        </span>
-      )}
-      <span
-        className={`${textSizeMap[textSize].count} font-bold bg-emerald-600 bg-clip-text text-transparent`}
+      <svg
+        width="92"
+        height="92"
+        viewBox="0 0 100 100"
+        aria-hidden="true"
+        className="shrink-0 -rotate-90"
       >
-        {count}
-      </span>
-      {suffix && (
-        <span
-          className={`${textSizeMap[textSize].suffix} text-emerald-600 font-light`}
-        >
-          {suffix}
+        <circle cx="50" cy="50" r="45" stroke="rgba(248,246,241,.12)" strokeWidth="6" fill="none" />
+        <motion.circle
+          cx="50"
+          cy="50"
+          r="45"
+          stroke="#A7E3C9"
+          strokeWidth="6"
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray={RING}
+          initial={{ strokeDashoffset: reduceMotion ? RING * (1 - fill) : RING }}
+          whileInView={{ strokeDashoffset: RING * (1 - fill) }}
+          viewport={{ once: true }}
+          transition={{ duration: 2.6, ease: EASE, delay }}
+        />
+      </svg>
+      <div className="flex flex-col gap-1.5">
+        <span className="tp-black text-[46px] leading-none tracking-[-0.03em] text-warm">
+          {stat.prefix}
+          <CountUp value={stat.value} />
+          {stat.suffix}
         </span>
-      )}
+        <span className="text-[15px] text-warm/80">{stat.statType}</span>
+      </div>
     </motion.div>
   );
 };
 
-export default function ImpactStats() {
+export default function ImpactStats({ id = "impact" }: { id?: string }) {
   const { data: stats } = useImpactStats();
+  if (!stats || stats.length === 0) return null;
+
+  // Rings are decorative: each fills relative to the largest figure
+  const max = Math.max(...stats.map((s) => s.value), 1);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-warm via-white to-warm py-20">
-      {/* Background Patterns */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/50 via-transparent to-transparent" />
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(14,92,75,0.05)_25%,rgba(14,92,75,0.05)_50%,transparent_50%,transparent_75%,rgba(14,92,75,0.05)_75%)] bg-[length:20px_20px]" />
-      </div>
-
-      {/* Decorative Elements */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-primary/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-32 h-32 bg-secondary/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-
-      <div className="container mx-auto px-6 relative">
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+    <section
+      id={id}
+      className="tp tp-section relative scroll-mt-20 overflow-hidden bg-deep text-warm"
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 1440 600"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-50"
+      >
+        <motion.path
+          d="M-20 520 C 360 460, 700 380, 1000 260 S 1380 80, 1460 40"
+          stroke="#5B8673"
+          strokeWidth="1.2"
+          fill="none"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-            Our Impact in Numbers
-          </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">
-            Discover the tangible results of our commitment to sustainable
-            development and organizational transformation.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
+          transition={{ duration: 2.4, ease: EASE }}
+        />
+        <motion.path
+          d="M-20 580 C 380 520, 760 440, 1060 320 S 1400 160, 1460 120"
+          stroke="#5B8673"
+          strokeWidth="1.2"
+          fill="none"
+          opacity=".6"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
           viewport={{ once: true }}
-        >
-          {stats &&
-            stats.length > 0 &&
-            stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                className="text-center"
-                variants={itemVariants}
-              >
-                <AnimatedNumber
-                  value={stat.value}
-                  suffix={stat.suffix}
-                  prefix={stat.prefix}
-                />
-                <p className="mt-4 text-slate-600 font-medium">
-                  {stat.statType}
-                </p>
-              </motion.div>
-            ))}
-        </motion.div>
+          transition={{ duration: 2.4, ease: EASE, delay: 0.3 }}
+        />
+      </svg>
+
+      <div className="tp-container relative flex flex-col gap-14">
+        <SectionTitle
+          light
+          title={
+            <>
+              Impact you can <Accent light>measure.</Accent>
+            </>
+          }
+          aside="Evidence over promises. Every engagement is tracked against outcomes agreed with the client."
+        />
+        <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))]">
+          {stats.map((stat, i) => (
+            <StatCard
+              key={stat._id}
+              stat={stat}
+              fill={0.45 + 0.45 * (stat.value / max)}
+              delay={[0, 0.08, 0.16, 0.08][i % 4]}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

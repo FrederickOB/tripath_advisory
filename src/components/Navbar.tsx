@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { navLinks } from "../constants";
-import { animations } from "@/lib/animation";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
+import { Link, NavLink, useLocation } from "react-router";
 import clsx from "clsx";
-import { Link, useLocation } from "react-router";
-import Button from "@/components/ui/Button";
+import { navLinks } from "../constants";
+import ActionButton from "@/components/ui/ActionButton";
 
 // Logo Component
 export const Logo: React.FC<{ scrolled: boolean }> = ({ scrolled }) => (
@@ -26,191 +25,167 @@ export const Logo: React.FC<{ scrolled: boolean }> = ({ scrolled }) => (
   </Link>
 );
 
-// Navigation Component
-const Navigation = ({
-  items,
-  scrolled,
-}: {
-  items: { label: string; path: string }[];
-  scrolled: boolean;
-}) => {
-  const location = useLocation();
-
-  return (
-    <nav className="hidden lg:flex space-x-8">
-      {items.map((item) => {
-        const isActive = location.pathname === item.path;
-        return (
-          <motion.a
-            key={item.label}
-            href={item.path}
-            className={clsx(
-              scrolled ? "text-gray-600" : "text-white",
-              "relative transition-colors duration-300 font-normal hover:text-emerald-400"
-            )}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {item.label}
-            {isActive && (
-              <motion.div
-                layoutId="nav-underline"
-                className="absolute left-0 -bottom-1 h-[2px] w-full bg-emerald-500 rounded"
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              />
-            )}
-          </motion.a>
-        );
-      })}
-    </nav>
-  );
-};
-
-// Mobile Navigation Component
-const MobileNavigation = ({
-  items,
-  // scrolled,
-  isOpen,
-  onClose,
-}: {
-  items: { label: string; path: string }[];
-  scrolled: boolean;
-  isOpen: boolean;
-  onClose: () => void;
-}) => (
-  <AnimatePresence>
-    {isOpen && (
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="fixed inset-0  h-fit z-50 "
-      >
-        <nav className="flex bg-white flex-col space-y-6 mt-16 p-6 shadow-xl">
-          {items.map((item) => (
-            <motion.a
-              key={item.label}
-              href={item.path}
-              className="text-gray-900 text-xl font-normal"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onClose}
-            >
-              {item.label}
-            </motion.a>
-          ))}
-          <Button
-            variant="primary"
-            className="mt-4 font-normal text-white text-sm"
-            href="/contact"
-            onClick={onClose}
-          >
-            Book Appointment
-          </Button>
-        </nav>
-      </motion.div>
-    )}
-  </AnimatePresence>
+// Logo used by the redesigned navigation
+const NavLogo = ({ light }: { light: boolean }) => (
+  <Link
+    to="/"
+    className="flex items-center gap-3 no-underline"
+    aria-label="TriPath Advisory home"
+  >
+    <img src="/assets/logo.png" alt="" className="h-8 w-auto" />
+    <span className={clsx("tp-wordmark", light && "tp-wordmark--light")}>
+      TriPath<span> Advisory</span>
+    </span>
+  </Link>
 );
 
-// Header Component
 export default function Navbar() {
-  // FIX: Set initial scrolled state based on window.scrollY
+  const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(() =>
-    typeof window !== "undefined" ? window.scrollY > 50 : false
+    typeof window !== "undefined" ? window.scrollY > 40 : false
   );
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 40,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    // FIX: Set scrolled state on mount in case page is loaded scrolled down
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     handleScroll();
-
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when clicking outside
+  // Close the mobile menu on navigation and on Escape
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (
-        !target.closest(".mobile-menu-button") &&
-        !target.closest(".mobile-menu")
-      ) {
-        setIsMobileMenuOpen(false);
-      }
-    };
+    setIsMenuOpen(false);
+  }, [pathname]);
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isMenuOpen]);
+
+  // Over the home hero the bar stays transparent until the page scrolls
+  const solid = pathname !== "/" || scrolled || isMenuOpen;
 
   return (
-    <motion.nav
-      className={`fixed z-50 w-screen py-4 transition-all duration-300 ${
-        scrolled ? "bg-white/95 backdrop-blur-sm shadow-md" : "bg-transparent"
-      }`}
-      variants={animations.item}
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+    <header
+      className={clsx(
+        "tp fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300",
+        solid
+          ? "border-dark/[.08] bg-white/[.86] backdrop-blur-[16px] backdrop-saturate-[1.4]"
+          : "border-transparent bg-transparent"
+      )}
     >
-      <div className="flex justify-between container items-center mx-auto px-6">
-        <Logo scrolled={scrolled} />
-        <Navigation items={navLinks} scrolled={scrolled} />
-        <div className="hidden lg:flex space-x-4">
-          <Button
-            variant="primary"
-            className={clsx(
-              scrolled ? "" : "bg-white/20  hover:bg-white/30 backdrop-blur-sm",
-              " font-normal text-sm text-white"
-            )}
-            href="/contact"
-          >
-            Book Appointment
-          </Button>
+      <nav
+        aria-label="Primary"
+        className="tp-container flex items-center justify-between gap-6 py-3.5"
+      >
+        <NavLogo light={!solid} />
+
+        <div className="hidden items-center gap-9 lg:flex">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              end={link.path === "/"}
+              className={({ isActive }) =>
+                clsx("tp-nav-link", !solid && "tp-nav-link--light", isActive && "is-active")
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
         </div>
 
-        {/* Mobile Menu Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="lg:hidden  mobile-menu-button p-2"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <div className="w-6 h-5 relative flex flex-col justify-between">
-            <span
-              className={`w-full h-0.5 bg-current transform transition-all duration-300 ${
-                isMobileMenuOpen ? "rotate-45 translate-y-2" : ""
-              } ${scrolled ? "bg-gray-900" : "bg-white"}`}
-            />
-            <span
-              className={`w-full h-0.5 bg-current transition-all duration-300 ${
-                isMobileMenuOpen ? "opacity-0" : ""
-              } ${scrolled ? "bg-gray-900" : "bg-white"}`}
-            />
-            <span
-              className={`w-full h-0.5 bg-current transform transition-all duration-300 ${
-                isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""
-              } ${scrolled ? "bg-gray-900" : "bg-white"}`}
-            />
-          </div>
-        </Button>
-      </div>
+        <div className="hidden lg:block">
+          <ActionButton href="/contact" size="sm">
+            Book a consultation
+          </ActionButton>
+        </div>
 
-      {/* Mobile Navigation */}
-      <MobileNavigation
-        items={navLinks}
-        scrolled={scrolled}
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
+        <button
+          type="button"
+          className={clsx(
+            "relative flex h-11 w-11 items-center justify-center rounded-xl lg:hidden",
+            solid ? "text-dark" : "text-white"
+          )}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
+          onClick={() => setIsMenuOpen((open) => !open)}
+        >
+          <span className="relative block h-4 w-6">
+            <span
+              className={clsx(
+                "absolute left-0 top-0 h-0.5 w-full bg-current transition-transform duration-300",
+                isMenuOpen && "translate-y-[7px] rotate-45"
+              )}
+            />
+            <span
+              className={clsx(
+                "absolute left-0 top-[7px] h-0.5 w-full bg-current transition-opacity duration-300",
+                isMenuOpen && "opacity-0"
+              )}
+            />
+            <span
+              className={clsx(
+                "absolute left-0 top-[14px] h-0.5 w-full bg-current transition-transform duration-300",
+                isMenuOpen && "-translate-y-[7px] -rotate-45"
+              )}
+            />
+          </span>
+        </button>
+      </nav>
+
+      <motion.span
+        className="tp-progress"
+        style={{ scaleX: progress }}
+        aria-hidden="true"
       />
-    </motion.nav>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            id="mobile-menu"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25 }}
+            className="border-t border-dark/[.08] bg-white lg:hidden"
+          >
+            <div className="tp-container flex flex-col gap-1 py-5">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  end={link.path === "/"}
+                  className={({ isActive }) =>
+                    clsx(
+                      "tp-nav-link py-3 text-lg",
+                      isActive && "text-primary"
+                    )
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+              <ActionButton href="/contact" className="mt-4">
+                Book a consultation
+              </ActionButton>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }
